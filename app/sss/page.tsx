@@ -16,14 +16,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Sıkça Sorulan Sorular | Mavi Sigorta',
     description: 'Sigorta poliçeleri hakkında merak ettiğiniz soruların cevapları.',
-    url: 'https://mavisigorta.net/sss',
+    url: 'https://tamamlayicisaglikbeylikduzu.com/sss',
   },
 };
 
 export default function SSSPage() {
   const faqSchema = getFAQPageSchema(faqs);
   const breadcrumbSchema = getBreadcrumbSchema([
-    { name: 'SSS', url: 'https://mavisigorta.net/sss' }
+    { name: 'SSS', url: 'https://tamamlayicisaglikbeylikduzu.com/sss' }
   ]);
 
   return (

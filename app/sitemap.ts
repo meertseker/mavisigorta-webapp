@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllBlogSlugs } from '@/lib/mdx';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://efesurucukursu.com'; // Update with your actual domain
+  const baseUrl = 'https://tamamlayicisaglikbeylikduzu.com';
   
   // Get all blog post slugs
   const blogSlugs = getAllBlogSlugs();

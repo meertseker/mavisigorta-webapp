@@ -34,7 +34,7 @@ export default function CourseCard({
       viewport={{ once: true }}
       whileHover={{ y: -8, scale: 1.02 }}
       transition={springs.smooth}
-      className={`relative backdrop-blur-xl ${popular ? 'bg-white/95 dark:bg-gray-900/95 shadow-glass-xl' : 'bg-white/90 dark:bg-gray-900/90 shadow-glass-lg'} rounded-3xl border border-white/30 dark:border-white/10 overflow-hidden ${className}`}
+      className={`relative backdrop-blur-xl ${popular ? 'bg-white/95 dark:bg-gray-900/95 shadow-glass-xl' : 'bg-white/90 dark:bg-gray-900/90 shadow-glass-lg'} rounded-3xl border border-white/30 dark:border-white/10 overflow-hidden flex flex-col ${className}`}
     >
       {/* Popular badge with glass effect */}
       {popular && (
@@ -102,12 +102,12 @@ export default function CourseCard({
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-6 flex-1 flex flex-col">
         <h3 className="text-h3 font-bold text-gray-900 dark:text-white mb-2">{title}</h3>
         <p className="text-gray-600 dark:text-gray-400 mb-6 text-sm leading-relaxed">{description}</p>
 
         {/* Features */}
-        <ul className="space-y-3 mb-8">
+        <ul className="space-y-3 mb-8 flex-1">
           {features.map((feature, index) => (
             <motion.li
               key={index}

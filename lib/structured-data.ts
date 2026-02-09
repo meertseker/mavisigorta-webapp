@@ -8,11 +8,11 @@ export function getLocalBusinessSchema(): WithContext<LocalBusiness> {
   return {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
-    '@id': 'https://mavisigorta.net',
+    '@id': 'https://tamamlayicisaglikbeylikduzu.com',
     name: settings.siteName,
-    image: 'https://mavisigorta.net/images/logo.png',
+    image: 'https://tamamlayicisaglikbeylikduzu.com/images/logo.png',
     description: settings.seo.description,
-    url: 'https://mavisigorta.net',
+    url: 'https://tamamlayicisaglikbeylikduzu.com',
     telephone: settings.contact.phone,
     email: settings.contact.email,
     address: {
@@ -163,7 +163,7 @@ export function getArticleSchema(post: BlogPost): WithContext<Article> {
     '@type': 'Article',
     headline: post.title,
     description: post.excerpt,
-    image: post.image ? `https://mavisigorta.net${post.image}` : undefined,
+    image: post.image ? `https://tamamlayicisaglikbeylikduzu.com${post.image}` : undefined,
     datePublished: post.date,
     dateModified: post.date,
     author: {
@@ -175,12 +175,12 @@ export function getArticleSchema(post: BlogPost): WithContext<Article> {
       name: settings.siteName,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://mavisigorta.net/images/logo.png',
+        url: 'https://tamamlayicisaglikbeylikduzu.com/images/logo.png',
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://mavisigorta.net/blog/${post.slug}`,
+      '@id': `https://tamamlayicisaglikbeylikduzu.com/blog/${post.slug}`,
     },
   };
 }

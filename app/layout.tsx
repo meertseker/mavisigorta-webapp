@@ -26,7 +26,7 @@ const jakarta = Plus_Jakarta_Sans({
 const settings = getSiteSettings();
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mavisigorta.net'),
+  metadataBase: new URL('https://tamamlayicisaglikbeylikduzu.com'),
   title: {
     default: settings.seo.title,
     template: '%s | Mavi Sigorta',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     description: settings.seo.description,
     type: "website",
     locale: "tr_TR",
-    url: 'https://mavisigorta.net',
+    url: 'https://tamamlayicisaglikbeylikduzu.com',
     siteName: settings.siteName,
   },
   twitter: {

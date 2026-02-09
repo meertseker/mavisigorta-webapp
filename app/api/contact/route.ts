@@ -45,8 +45,8 @@ export async function POST(request: NextRequest) {
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'Efe Sürücü Kursu <onboarding@resend.dev>', // In production, use your verified domain
-      to: process.env.CONTACT_EMAIL || 'info@efesurucukursu.com',
+      from: 'Mavi Sigorta <onboarding@resend.dev>', // In production, use your verified domain
+      to: process.env.CONTACT_EMAIL || 'info@mavisigorta.net',
       replyTo: email,
       subject: `Yeni İletişim Formu - ${name}`,
       html: `
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
         <p><strong>Ad Soyad:</strong> ${name}</p>
         <p><strong>E-posta:</strong> ${email}</p>
         <p><strong>Telefon:</strong> ${phone}</p>
-        ${courseInterest ? `<p><strong>İlgilenilen Kurs:</strong> ${courseInterest}</p>` : ''}
+        ${courseInterest ? `<p><strong>İlgilenilen Sigorta:</strong> ${courseInterest}</p>` : ''}
         <p><strong>Mesaj:</strong></p>
         <p>${message.replace(/\n/g, '<br>')}</p>
       `,

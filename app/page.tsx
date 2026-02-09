@@ -1,6 +1,7 @@
 import { getPopularCourses, getSiteSettings, getCourses } from '@/lib/content';
 import { getRecentBlogPosts } from '@/lib/mdx';
 import { formatDate } from '@/lib/utils';
+import Link from 'next/link';
 import Hero from '@/components/ui/Hero';
 import Navigation from '@/components/ui/Navigation';
 import StatsCard from '@/components/ui/StatsCard';
@@ -52,7 +53,7 @@ export default function Home() {
         title="Geleceğinizi Güvence Altına Alın"
         subtitle={`${stats.yearsOfExperience} yıllık deneyimimiz, %${stats.successRate} müşteri memnuniyeti ve profesyonel hizmet anlayışımızla sağlığınız ve varlıklarınız güvende.`}
         primaryCta={{ text: 'Hizmetlerimiz', href: '/kurslar' }}
-        secondaryCta={{ text: 'WhatsApp ile İletişim', href: 'https://wa.me/905324807617?text=Merhaba,%20sigorta%20hakkında%20bilgi%20almak%20istiyorum' }}
+        secondaryCta={{ text: 'Hızlı Teklif', href: 'https://wa.me/905324807617?text=Merhaba,%20sigorta%20teklifi%20almak%20istiyorum' }}
         stats={[
           { value: `${stats.yearsOfExperience}+`, label: 'Yıl Deneyim' },
           { value: `%${stats.successRate}`, label: 'Memnuniyet' },
@@ -61,7 +62,7 @@ export default function Home() {
       />
 
       {/* Stats Section */}
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <StatsCard
@@ -112,13 +113,13 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-h2 font-bold text-gray-900 dark:text-white mb-4">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Neden Mavi Sigorta?
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400">
               Farkımızı yaratan özelliklerimiz
             </p>
           </div>
@@ -141,19 +142,19 @@ export default function Home() {
       </section>
 
       {/* Courses Section */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="py-12 md:py-20 relative overflow-hidden">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary-red/5 via-transparent to-secondary-orange/5"></div>
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Sigorta Hizmetlerimiz
             </h2>
-            <p className="text-xl text-gray-900 dark:text-white">
+            <p className="text-lg md:text-xl text-gray-900 dark:text-white">
               Size en uygun sigorta çözümünü seçin
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto">
             {courses.slice(0, 3).map((course) => (
               <CourseCard
                 key={course.id}
@@ -166,12 +167,40 @@ export default function Home() {
                 image={course.image}
               />
             ))}
+            
+            {/* Hidden cards on mobile, shown on desktop */}
+            {courses.slice(3).map((course) => (
+              <CourseCard
+                key={course.id}
+                title={course.title}
+                description={course.description}
+                price={course.price}
+                duration={course.duration}
+                features={course.features}
+                popular={course.popular}
+                image={course.image}
+                className="hidden lg:flex"
+              />
+            ))}
+          </div>
+          
+          {/* Show more button - Only visible on mobile */}
+          <div className="mt-8 text-center lg:hidden">
+            <Link 
+              href="/kurslar"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-red to-secondary-orange text-white rounded-2xl font-semibold shadow-glow-red hover:scale-105 transition-all"
+            >
+              <span>Tüm Hizmetleri Gör</span>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20">
+      <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-h2 font-bold text-gray-900 dark:text-white mb-4">
@@ -198,7 +227,7 @@ export default function Home() {
 
       {/* Blog Section */}
       {recentPosts.length > 0 && (
-        <section className="py-20 relative overflow-hidden">
+        <section className="py-12 md:py-20 relative overflow-hidden">
           {/* Background gradient */}
           <div className="absolute inset-0 bg-gradient-to-bl from-accent-rose/10 via-transparent to-primary-red/10"></div>
           <div className="container mx-auto px-4 relative z-10">
@@ -230,7 +259,7 @@ export default function Home() {
       )}
 
       {/* CTA Section */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="py-12 md:py-20 relative overflow-hidden">
         {/* Animated gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary-red via-secondary-orange to-accent-rose"></div>
         
