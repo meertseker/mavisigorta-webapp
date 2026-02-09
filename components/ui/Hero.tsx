@@ -313,7 +313,7 @@ export default function Hero({ title, subtitle, primaryCta, secondaryCta, stats 
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.7 }}
-                className="md:col-span-6 backdrop-blur-2xl bg-gradient-to-br from-secondary-orange/20 to-accent-rose/20 rounded-3xl p-6 border border-secondary-orange/30 shadow-glow-orange overflow-hidden relative group"
+                className="hidden md:block md:col-span-6 backdrop-blur-2xl bg-gradient-to-br from-secondary-orange/20 to-accent-rose/20 rounded-3xl p-6 border border-secondary-orange/30 shadow-glow-orange overflow-hidden relative group"
               >
                 {/* Background Image with Blur */}
                 <div className="absolute inset-0">
@@ -352,7 +352,7 @@ export default function Hero({ title, subtitle, primaryCta, secondaryCta, stats 
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.8 }}
-                className="md:col-span-6 backdrop-blur-2xl bg-white/5 rounded-3xl p-6 border border-white/10 shadow-glass-xl overflow-hidden relative group hover:bg-white/10 transition-all"
+                className="hidden md:block md:col-span-6 backdrop-blur-2xl bg-white/5 rounded-3xl p-6 border border-white/10 shadow-glass-xl overflow-hidden relative group hover:bg-white/10 transition-all"
               >
                 {/* Background Image with Blur */}
                 <div className="absolute inset-0">
