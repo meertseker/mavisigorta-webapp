@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-sans: var(--font-jakarta), -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  
+  /* Primary colors - Blue theme */
+  --color-primary-red: #0066CC;
+  --color-primary-red-dark: #004C99;
+  --color-primary-red-light: #3399FF;
+  --color-primary-crimson: #0052A3;
+  --color-primary-scarlet: #0073E6;
+  
+  /* Secondary colors */
+  --color-secondary-orange: #00A3E0;
+  --color-secondary-orange-dark: #0088CC;
+  --color-secondary-amber: #33B8FF;
+  --color-secondary-amber-dark: #0099CC;
+  --color-secondary-gold: #66C2FF;
+  
+  /* Accent colors */
+  --color-accent-rose: #0099FF;
+  --color-accent-rose-dark: #0066CC;
+  --color-accent-coral: #66B3FF;
+  --color-accent-burgundy: #003D7A;
+  --color-accent-wine: #002952;
+  
+  /* Apple colors (legacy) */
+  --color-apple-blue: #007AFF;
+  --color-apple-blue-dark: #0A84FF;
+  --color-apple-green: #34C759;
+  --color-apple-green-dark: #30D158;
+  --color-apple-orange: #FF9500;
+  --color-apple-orange-dark: #FF9F0A;
+  --color-apple-purple: #AF52DE;
+  --color-apple-purple-dark: #BF5AF2;
+  --color-apple-pink: #FF2D55;
+  --color-apple-pink-dark: #FF375F;
+  --color-apple-teal: #5AC8FA;
+  --color-apple-teal-dark: #64D2FF;
+  --color-apple-indigo: #5856D6;
+  --color-apple-indigo-dark: #5E5CE6;
+  
+  /* Glass colors */
+  --color-glass-white: rgba(255, 255, 255, 0.7);
+  --color-glass-white-80: rgba(255, 255, 255, 0.8);
+  --color-glass-white-60: rgba(255, 255, 255, 0.6);
+  --color-glass-white-40: rgba(255, 255, 255, 0.4);
+  --color-glass-white-20: rgba(255, 255, 255, 0.2);
+  --color-glass-dark: rgba(0, 0, 0, 0.3);
+  --color-glass-dark-50: rgba(0, 0, 0, 0.5);
+  --color-glass-dark-70: rgba(0, 0, 0, 0.7);
+  
+  /* Depth colors */
+  --color-depth-surface: rgba(255, 255, 255, 0.8);
+  --color-depth-elevated: rgba(255, 255, 255, 0.95);
+  --color-depth-floating: rgba(255, 255, 255, 1);
+  --color-depth-dark-surface: rgba(28, 28, 30, 0.7);
+  --color-depth-dark-elevated: rgba(28, 28, 30, 0.85);
+  --color-depth-dark-floating: rgba(28, 28, 30, 0.95);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  /* Glass effects */
+  --glass-blur: 20px;
+  --glass-opacity: 0.7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Apple Typography Scale */
+.text-display {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.text-h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.text-h2 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.text-h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.875rem);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+}
+
+.text-body {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text-caption {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1.4;
+}
+
+/* Accessibility: Focus Styles */
+*:focus-visible {
+  outline: 2px solid #0066CC;
+  outline-offset: 2px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.3);
+}
+
+/* Accessibility: Skip to content link */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

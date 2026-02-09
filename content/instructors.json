@@ -1,0 +1,38 @@
+[
+  {
+    "id": "soner-seker",
+    "name": "Soner Şeker",
+    "title": "Kurucu & Sigorta Danışmanı",
+    "experience": "25 yıl",
+    "photo": "/images/instructors/soner-seker.jpg",
+    "bio": "25 yıllık sigorta sektörü deneyimi ile müşterilerimize en uygun sigorta çözümlerini sunuyorum.",
+    "specialties": ["Sağlık Sigortası", "Kasko", "Konut Sigortası"]
+  },
+  {
+    "id": "uzman-1",
+    "name": "Ahmet Yılmaz",
+    "title": "Sağlık Sigortası Uzmanı",
+    "experience": "15 yıl",
+    "photo": "/images/instructors/ahmet-yilmaz.jpg",
+    "bio": "Sağlık sigortaları konusunda uzmanım. Size en uygun sağlık güvencesini bulmak için buradayım.",
+    "specialties": ["Tamamlayıcı Sağlık", "Modüler Sağlık", "Seyahat Sigortası"]
+  },
+  {
+    "id": "uzman-2",
+    "name": "Ayşe Demir",
+    "title": "Araç Sigortaları Uzmanı",
+    "experience": "12 yıl",
+    "photo": "/images/instructors/ayse-demir.jpg",
+    "bio": "Kasko ve trafik sigortaları konusunda deneyimliyim. Aracınız için en avantajlı teklifi buluyorum.",
+    "specialties": ["Kasko", "Trafik Sigortası", "Yeşil Kart"]
+  },
+  {
+    "id": "uzman-3",
+    "name": "Mehmet Kaya",
+    "title": "Kurumsal Sigorta Danışmanı",
+    "experience": "18 yıl",
+    "photo": "/images/instructors/mehmet-kaya.jpg",
+    "bio": "İşyeri, AVM ve kurumsal sigorta çözümlerinde uzmanım. İşiniz için kapsamlı koruma sunuyorum.",
+    "specialties": ["İşyeri Sigortası", "AVM Sigortası", "Sorumluluk Sigortaları"]
+  }
+]

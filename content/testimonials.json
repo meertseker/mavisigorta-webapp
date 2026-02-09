@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1",
+    "name": "Zeynep Yılmaz",
+    "company": "Ev Sahibi",
+    "rating": 5,
+    "text": "Konut ve DASK sigortamı Mavi Sigorta'dan aldım. Soner Bey çok ilgili ve profesyonel. Her şeyi detaylı anlattılar.",
+    "date": "2024-01-15",
+    "service": "Konut Sigortası"
+  },
+  {
+    "id": "2",
+    "name": "Ahmet Demir",
+    "company": "Serbest Meslek",
+    "rating": 5,
+    "text": "Tamamlayıcı sağlık sigortam sayesinde hastanede hiç fark ödemedim. Mavi Sigorta'ya çok teşekkür ederim.",
+    "date": "2024-01-20",
+    "service": "Tamamlayıcı Sağlık Sigortası"
+  },
+  {
+    "id": "3",
+    "name": "Elif Kaya",
+    "company": "Özel Sektör",
+    "rating": 5,
+    "text": "Kasko sigortamda hasar yaşadım. Mavi Sigorta tüm süreci takip etti, çok memnun kaldım. Hızlı ve profesyonel hizmet.",
+    "date": "2024-02-01",
+    "service": "Kasko Sigortası"
+  },
+  {
+    "id": "4",
+    "name": "Can Öztürk",
+    "company": "İşletme Sahibi",
+    "rating": 5,
+    "text": "İşyerim için aldığım sigorta sayesinde su baskını hasarım karşılandı. 25 yıllık deneyim gerçekten fark yaratıyor.",
+    "date": "2024-02-05",
+    "service": "İşyeri Sigortası"
+  }
+]

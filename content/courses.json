@@ -1,0 +1,138 @@
+[
+  {
+    "id": "tamamlayici-saglik",
+    "title": "Tamamlayıcı Sağlık Sigortası",
+    "description": "Allianz Tamamlayıcı Sağlık Sigortası ile SSK anlaşmalı hastanelerde fark ödemeden sağlığınızı güvence altına alın. SGK'nızın karşılamadığı farkları tamamen öder.",
+    "price": 0,
+    "duration": "Yıllık",
+    "features": [
+      "SSK anlaşmalı hastanelerde fark ödemeden tedavi",
+      "Yatarak ve ayakta tedavi kapsamı",
+      "Ameliyat ve doğum masrafları",
+      "Reçete ilaç giderleri",
+      "Sağlık raporu ve tetkikler"
+    ],
+    "image": "/images/courses/tamamlayici-saglik.jpg",
+    "popular": true,
+    "vehicleType": "both"
+  },
+  {
+    "id": "moduler-saglik",
+    "title": "Modüler Sağlık Sigortası",
+    "description": "SGK'dan bağımsız olarak Türkiye'deki tüm özel hastanelerde kullanabileceğiniz kapsamlı sağlık güvencesi. İstediğiniz hastaneyi özgürce seçin.",
+    "price": 0,
+    "duration": "Yıllık",
+    "features": [
+      "Tüm özel hastanelerde geçerli",
+      "SGK'dan bağımsız kullanım",
+      "Geniş tedavi kapsamı",
+      "Check-up ve tetkikler",
+      "Özel oda ve bakım imkanı",
+      "Yurt dışı tedavi desteği"
+    ],
+    "image": "/images/courses/moduler-saglik.jpg",
+    "popular": true,
+    "vehicleType": "both"
+  },
+  {
+    "id": "kasko-sigortasi",
+    "title": "Kasko Sigortası",
+    "description": "Aracınızı çarpma, çarpılma, çalınma, yangın ve doğal afetlere karşı kapsamlı şekilde güvence altına alın. En uygun fiyatlarla tam koruma.",
+    "price": 0,
+    "duration": "Yıllık",
+    "features": [
+      "Çarpma ve çarpılma teminatı",
+      "Çalınma güvencesi",
+      "Yangın ve doğal afet koruması",
+      "Cam kırılması teminatı",
+      "Deprem teminatı"
+    ],
+    "image": "/images/courses/kasko.jpg",
+    "popular": true,
+    "vehicleType": "both"
+  },
+  {
+    "id": "trafik-sigortasi",
+    "title": "Trafik Sigortası",
+    "description": "Yasal zorunlu trafik sigortası ile üçüncü şahıslara verebileceğiniz zararları güvence altına alın. Hızlı poliçe işlemleri.",
+    "price": 0,
+    "duration": "Yıllık",
+    "features": [
+      "Yasal zorunlu teminatlar",
+      "Üçüncü şahıs zararları",
+      "Maddi hasar teminatı",
+      "Hızlı poliçe düzenleme",
+      "Online işlem imkanı"
+    ],
+    "image": "/images/courses/trafik.jpg",
+    "popular": false,
+    "vehicleType": "both"
+  },
+  {
+    "id": "konut-sigortasi",
+    "title": "Konut Sigortası",
+    "description": "Evinizi yangın, su baskını, hırsızlık ve doğal afetlere karşı koruyun. Ev eşyalarınız da güvence altında.",
+    "price": 0,
+    "duration": "Yıllık",
+    "features": [
+      "Yangın ve su baskını teminatı",
+      "Hırsızlık güvencesi",
+      "Doğal afet koruması",
+      "Ev eşyası sigortası",
+      "Cam kırılması teminatı"
+    ],
+    "image": "/images/courses/konut.jpg",
+    "popular": false,
+    "vehicleType": "both"
+  },
+  {
+    "id": "isyeri-sigortasi",
+    "title": "İşyeri Sigortası",
+    "description": "İşyerinizi ve iş ekipmanlarınızı kapsamlı şekilde güvence altına alın. İşinizin devamlılığı için gerekli koruma.",
+    "price": 0,
+    "duration": "Yıllık",
+    "features": [
+      "İşyeri binası teminatı",
+      "Demirbaş ve ekipman güvencesi",
+      "Stok güvencesi",
+      "İşveren mali sorumluluk",
+      "Cam kırılması teminatı"
+    ],
+    "image": "/images/courses/isyeri.jpg",
+    "popular": false,
+    "vehicleType": "both"
+  },
+  {
+    "id": "dask",
+    "title": "DASK Deprem Sigortası",
+    "description": "Yasal zorunlu deprem sigortası ile konutunuzu deprem riskine karşı güvence altına alın.",
+    "price": 0,
+    "duration": "Yıllık",
+    "features": [
+      "Yasal zorunlu deprem teminatı",
+      "Konut binası güvencesi",
+      "Deprem hasarları teminatı",
+      "Hızlı hasar ödemesi"
+    ],
+    "image": "/images/courses/dask.jpg",
+    "popular": false,
+    "vehicleType": "both"
+  },
+  {
+    "id": "seyahat-saglik",
+    "title": "Seyahat Sağlık Sigortası",
+    "description": "Yurt dışı seyahatlerinizde sağlık giderlerinizi güvence altına alın. Vize başvuruları için geçerli.",
+    "price": 0,
+    "duration": "Seyahat süresi",
+    "features": [
+      "Yurt dışı sağlık giderleri",
+      "Acil tedavi masrafları",
+      "Hastane yatış teminatı",
+      "Ambulans hizmeti",
+      "Vize için geçerli belge"
+    ],
+    "image": "/images/courses/seyahat.jpg",
+    "popular": false,
+    "vehicleType": "both"
+  }
+]

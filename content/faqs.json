@@ -1,0 +1,62 @@
+[
+  {
+    "id": "1",
+    "question": "Tamamlayıcı Sağlık Sigortası nedir ve nasıl çalışır?",
+    "answer": "Tamamlayıcı Sağlık Sigortası, SGK'nızın karşılamadığı sağlık giderlerinin farkını ödeyen bir sigorta türüdür. SSK anlaşmalı hastanelerde fark ödemeden tedavi olabilir, ameliyat, doğum ve ilaç giderleriniz karşılanır."
+  },
+  {
+    "id": "2",
+    "question": "Modüler Sağlık Sigortası ile Tamamlayıcı Sağlık Sigortası arasındaki fark nedir?",
+    "answer": "Tamamlayıcı Sağlık Sigortası SGK'nız ile birlikte çalışırken, Modüler Sağlık Sigortası SGK'dan tamamen bağımsızdır. Modüler sigorta ile Türkiye'deki tüm özel hastanelerde özgürce tedavi olabilirsiniz."
+  },
+  {
+    "id": "3",
+    "question": "Kasko sigortası neden önemlidir?",
+    "answer": "Kasko sigortası, aracınızı çarpma, çarpılma, çalınma, yangın ve doğal afetlere karşı korur. Trafik sigortasından farklı olarak kendi aracınızın hasarlarını da kapsar. Özellikle yeni ve değerli araçlar için mutlaka önerilir."
+  },
+  {
+    "id": "4",
+    "question": "Sigorta poliçemi nasıl yenileyebilirim?",
+    "answer": "Sigorta poliçenizi telefon, e-posta veya ofisimize gelerek kolayca yenileyebilirsiniz. Poliçe bitiş tarihinizden önce size hatırlatma yapıyoruz. Online yenileme imkanı da mevcuttur."
+  },
+  {
+    "id": "5",
+    "question": "DASK zorunlu mu?",
+    "answer": "Evet, DASK (Doğal Afet Sigortaları Kurumu) deprem sigortası bağımsız bölümlerde (daireler) yasal olarak zorunludur. Konutunuzu deprem riskine karşı güvence altına alır."
+  },
+  {
+    "id": "6",
+    "question": "Hangi sigorta şirketleri ile çalışıyorsunuz?",
+    "answer": "Allianz başta olmak üzere, tüm büyük sigorta şirketleri ile çalışmaktayız. Size en uygun ve avantajlı teklifi sunmak için farklı şirketlerin tekliflerini karşılaştırıyoruz."
+  },
+  {
+    "id": "7",
+    "question": "Sigorta primimi taksitle ödeyebilir miyim?",
+    "answer": "Evet, çoğu sigorta ürünümüzde kredi kartına taksit imkanı sunuyoruz. Taksit seçenekleri sigorta türüne ve tutarına göre değişiklik gösterebilir."
+  },
+  {
+    "id": "8",
+    "question": "Sağlık sigortası ne zaman devreye girer?",
+    "answer": "Sağlık sigortası poliçeniz düzenlendikten sonra genellikle 15-30 gün bekleme süresi vardır. Bu süre sigortaya göre değişir. Acil durumlar için bekleme süresi uygulanmaz."
+  },
+  {
+    "id": "9",
+    "question": "Konut sigortası hangi riskleri kapsar?",
+    "answer": "Konut sigortası yangın, su baskını, hırsızlık, doğal afetler, cam kırılması gibi riskleri kapsar. Ev eşyalarınız da sigorta kapsamına dahil edilebilir. Paket içeriği seçiminize göre değişir."
+  },
+  {
+    "id": "10",
+    "question": "Hasar durumunda ne yapmalıyım?",
+    "answer": "Hasar durumunda derhal bizi arayın. Size hasar işlemleri konusunda rehberlik eder ve gerekli belgeleri hazırlamanıza yardımcı oluruz. Ekspertiz ve hasar ödeme süreçlerini takip ederiz."
+  },
+  {
+    "id": "11",
+    "question": "Yeşil Kart nedir?",
+    "answer": "Yeşil Kart, yurt dışına araç ile çıkışlarda gerekli olan uluslararası sigorta belgesidir. Gideceğiniz ülkeye göre süresi ve kapsamı belirlenir."
+  },
+  {
+    "id": "12",
+    "question": "İşyeri sigortası kimlere önerilir?",
+    "answer": "İşyeri sigortası tüm işletme sahiplerine önerilir. Mağaza, ofis, atölye, fabrika gibi tüm iş yerlerinde olası risklere karşı koruma sağlar. Hem bina hem de içerik güvence altına alınabilir."
+  }
+]
