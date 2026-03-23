@@ -123,11 +123,10 @@ export function useDarkMode() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Check initial theme
+    // Keep theme class-driven to avoid OS theme drift.
     const checkDarkMode = () => {
       const darkModeClass = document.documentElement.classList.contains('dark');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setIsDark(darkModeClass || prefersDark);
+      setIsDark(darkModeClass);
     };
 
     checkDarkMode();
@@ -139,14 +138,8 @@ export function useDarkMode() {
       attributeFilter: ['class'],
     });
 
-    // Watch for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleChange = () => checkDarkMode();
-    mediaQuery.addEventListener('change', handleChange);
-
     return () => {
       observer.disconnect();
-      mediaQuery.removeEventListener('change', handleChange);
     };
   }, []);
 
