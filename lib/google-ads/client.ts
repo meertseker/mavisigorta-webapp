@@ -528,6 +528,20 @@ export async function publishCampaignAsPaused(campaign: Campaign): Promise<Publi
     });
   }
 
+  // 5a) Campaign-level negative keywords (tüm ad group'larda geçerli)
+  for (const neg of campaign.negativeKeywords || []) {
+    if (!neg.text.trim()) continue;
+    operations.push({
+      campaignCriterionOperation: {
+        create: {
+          campaign: `${customer}/campaigns/${campaignTempId}`,
+          keyword: { text: neg.text, matchType: neg.matchType },
+          negative: true,
+        },
+      },
+    });
+  }
+
   // 5) Ad schedule criteria
   for (const sched of campaign.adSchedule || []) {
     operations.push({

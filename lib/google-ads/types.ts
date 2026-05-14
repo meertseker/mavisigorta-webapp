@@ -120,6 +120,12 @@ export interface Campaign {
   /** Optional convenience field linking the campaign to a Mavi product. */
   insuranceProduct?: InsuranceSlug;
   adGroups: AdGroup[];
+  /**
+   * Kampanya seviyesinde negatif anahtar kelimeler. Tüm ad group'lara otomatik
+   * uygulanır; ad-group içine tekrar tekrar yapıştırmaya gerek kalmaz.
+   * REST'e `campaignCriterion` (negative keyword) olarak gönderilir.
+   */
+  negativeKeywords?: KeywordItem[];
   // Assets (campaign-level extensions)
   sitelinks?: SitelinkAsset[];
   callouts?: CalloutAsset[];

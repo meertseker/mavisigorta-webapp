@@ -66,6 +66,24 @@ export function runPreflight(draft: DraftCampaign): PreflightItem[] {
         validHL.length < 8 ? '(öneri: 10+ farklı başlık)' : ''
       }`,
     });
+
+    // Tekrarlı başlık kontrolü: Google'ın RSA combination motoru için en az 12
+    // farklı (case-insensitive, boşluk normalize edilmiş) başlık olmalı.
+    // Çok tekrarlanan başlıklar Ad Strength'i düşürür ve combination çeşitliliği
+    // kaybolur.
+    const normalizedHL = validHL.map((h) => h.trim().toLowerCase().replace(/\s+/g, ' '));
+    const uniqueHL = new Set(normalizedHL);
+    items.push({
+      label: `Grup ${i + 1}: başlık çeşitliliği`,
+      status: uniqueHL.size >= 12 ? 'ok' : uniqueHL.size >= 8 ? 'warning' : 'error',
+      detail:
+        uniqueHL.size === normalizedHL.length
+          ? `${uniqueHL.size} farklı başlık`
+          : `${uniqueHL.size}/${normalizedHL.length} farklı (${
+              normalizedHL.length - uniqueHL.size
+            } tekrar)`,
+    });
+
     items.push({
       label: `Grup ${i + 1}: açıklamalar`,
       status: validDesc.length >= 4 ? 'ok' : validDesc.length >= 2 ? 'warning' : 'error',

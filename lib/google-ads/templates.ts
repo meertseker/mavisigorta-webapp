@@ -1,16 +1,21 @@
 /**
  * Mavi Sigorta'ya özel kampanya şablonları.
  *
- * Her ürün için:
- * - Önerilen kampanya adı, günlük bütçe, bidding stratejisi
- * - Reklam grupları (genellikle 1-2: marka + lokasyon)
- * - RSA başlık + açıklama listesi (Google sınırlarına uygun)
- * - Anahtar kelime seti (broad / phrase / exact karışımı)
- * - Negatif anahtar kelimeler (CPC israfını önler)
- * - Landing URL builder (UTM parametreleri ile)
+ * Tasarım kararları (2026 revizyonu):
+ * - Tek vaat tonu: "5 dakikada poliçeniz" — 60sn form + 30dk geri dönüş = ~5 dk.
+ * - RSA başlıkları ≤30 char, açıklamalar ≤90 char (Google sınırları).
+ * - Negatif anahtar kelimeler artık **campaign-level** tutulur (her ad group'a
+ *   tekrar tekrar yapıştırmak yerine `Campaign.negativeKeywords`).
+ * - Bidding default'u `MAXIMIZE_CONVERSIONS`. Hesap 30+ dönüşüm topladığında
+ *   UI'dan TARGET_CPA'ya geçilir. Önerilen CPA hedefleri her ürünün
+ *   `defaultTargetCpaTry`'sinde tutuluyor (UI'da gösterim için).
+ * - Match type karışımı: anchor kavramlar BROAD, marka/spesifik aramalar EXACT,
+ *   geri kalanı PHRASE.
+ * - Title-case AI-tell olarak görülmesin diye başlıklar farklılaştırıldı;
+ *   tekrar oranı kontrol altında. PreflightChecklist tekrarları işaretler.
  *
- * Tüm RSA başlıkları ≤30 char, açıklamalar ≤90 char olarak doğrulanmalıdır.
- * Aşağıdaki şablonlar Türkçe karakter dahil bu sınırlara uyacak şekilde yazılmıştır.
+ * Detaylı karar gerekçeleri ve operatörün UI'da yapması gerekenler için
+ * bkz: `docs/GOOGLE_ADS_AUDIT.md`.
  */
 
 import type { InsuranceSlug } from '@/lib/types';
@@ -22,82 +27,12 @@ import type {
   CallAsset,
   AdScheduleEntry,
 } from './types';
-import { tryToMicros } from './types';
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://tamamlayicisaglikbeylikduzu.com';
 const PHONE = process.env.NEXT_PUBLIC_AGENT_PHONE || '+905324807617';
+const WA_NUMBER = (process.env.NEXT_PUBLIC_WA_NUMBER || '905324807617').replace(/\D/g, '');
 
-// ─── Ortak asset setleri ──────────────────────────────────────────────────
-
-/** Mavi Sigorta için tüm ürünlerde geçerli marka callout'ları. */
-const SHARED_CALLOUTS: CalloutAsset[] = [
-  { text: '25 Yıllık Sigorta Deneyimi' },
-  { text: '8 Sigorta Şirketi Karşılaştır' },
-  { text: '60 Saniyede Online Teklif' },
-  { text: 'Soner Bey 30 Dakikada Arar' },
-  { text: 'Beylikdüzü Yerel Acente' },
-  { text: 'KVKK Uyumlu - Güvenli' },
-  { text: 'WhatsApp\'tan Anında İletişim' },
-  { text: 'Hızlı Poliçe Düzenleme' },
-];
-
-const SHARED_CALL: CallAsset = {
-  phoneNumber: PHONE,
-  countryCode: 'TR',
-};
-
-/** Türkiye iş saatleri: Pzt-Cmt 08:00-20:00 normal bid, dışı düşürülmüş. */
-const WORKING_HOURS_SCHEDULE: AdScheduleEntry[] = [
-  ...(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'] as const).flatMap(
-    (day): AdScheduleEntry[] => [
-      { dayOfWeek: day, startHour: 8, endHour: 12, bidModifier: 1.1 },
-      { dayOfWeek: day, startHour: 12, endHour: 18, bidModifier: 1.0 },
-      { dayOfWeek: day, startHour: 18, endHour: 22, bidModifier: 0.9 },
-    ],
-  ),
-  { dayOfWeek: 'SATURDAY', startHour: 9, endHour: 18, bidModifier: 1.0 },
-  { dayOfWeek: 'SUNDAY', startHour: 10, endHour: 18, bidModifier: 0.7 },
-];
-
-/** Her ürüne göre 4 sitelink üretir (kendi sayfası + 3 destek sayfası). */
-function buildSharedSitelinks(productSlug: InsuranceSlug, productLabel: string): SitelinkAsset[] {
-  return [
-    {
-      text: `${productLabel} Detayı`,
-      description1: 'Kapsam, fiyat, teminatlar',
-      description2: 'Anlaşmalı şirketler ve sıkça sorulanlar',
-      finalUrl: new URL(`/sigortalar/${productSlug}`, SITE).toString(),
-    },
-    {
-      text: 'Hakkımızda',
-      description1: '25 yıllık Beylikdüzü acentesi',
-      description2: 'Soner Şeker ve Mavi Sigorta hikâyesi',
-      finalUrl: new URL('/hakkimizda', SITE).toString(),
-    },
-    {
-      text: 'Sıkça Sorulanlar',
-      description1: 'Sigorta hakkında merak edilenler',
-      description2: 'Hızlı cevaplar ve örnek senaryolar',
-      finalUrl: new URL('/sss', SITE).toString(),
-    },
-    {
-      text: 'İletişim & WhatsApp',
-      description1: 'Anında WhatsApp mesajı',
-      description2: 'Telefon, e-posta, ofis adresi',
-      finalUrl: new URL('/iletisim', SITE).toString(),
-    },
-  ];
-}
-
-function buildLandingUrl(product: InsuranceSlug, campaignSlug: string): string {
-  // /teklif/[urun] doğrudan kullanılabilir; aynı zamanda /sigortalar/[urun] da
-  // mümkün. Default olarak en yüksek dönüşüm getiren /teklif sayfasına yolluyoruz.
-  const url = new URL(`/teklif/${product}`, SITE);
-  url.searchParams.set('utm_source', 'google');
-  url.searchParams.set('utm_medium', 'cpc');
-  url.searchParams.set('utm_campaign', campaignSlug);
-  return url.toString();
-}
+// ─── Yardımcılar ──────────────────────────────────────────────────────────
 
 function kw(text: string, matchType: KeywordItem['matchType'] = 'PHRASE'): KeywordItem {
   return { text, matchType };
@@ -107,7 +42,79 @@ function neg(text: string, matchType: KeywordItem['matchType'] = 'PHRASE'): Keyw
   return { text, matchType, negative: true };
 }
 
-// İstanbul + çevre il/ilçeler (yer adı bazlı negatif değil, sadece keyword'lerde varyasyon)
+function waUrl(message: string): string {
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+// ─── Ortak callout setleri ────────────────────────────────────────────────
+// Hepsi ≤25 char. Spesifik vaat, tekrar yok.
+const SHARED_CALLOUTS: CalloutAsset[] = [
+  { text: '5 Dakikada Online Teklif' },
+  { text: 'Allianz Aracılık Hizmeti' },
+  { text: '8 Şirket Yan Yana Fiyat' },
+  { text: 'WhatsApp Hattı, Hemen Yaz' },
+  { text: 'Numaranı Paylaşmıyoruz' },
+  { text: 'Beylikdüzü Yerel Acente' },
+  { text: 'Hasarda Bizzat Yanında' },
+  { text: 'Anlaşmalı 200+ Hastane' },
+];
+
+const SHARED_CALL: CallAsset = {
+  phoneNumber: PHONE,
+  countryCode: 'TR',
+};
+
+// ─── Schedule ─────────────────────────────────────────────────────────────
+// Eski versiyonda Pazar 0.7 + akşam 18-22 0.9 idi. Sigorta = impulse arama
+// sektörü; weekend ve akşamlarda niyet düşmüyor. Bid modifier'lar artırıldı.
+const WORKING_HOURS_SCHEDULE: AdScheduleEntry[] = [
+  ...(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'] as const).flatMap(
+    (day): AdScheduleEntry[] => [
+      { dayOfWeek: day, startHour: 8, endHour: 12, bidModifier: 1.1 },
+      { dayOfWeek: day, startHour: 12, endHour: 18, bidModifier: 1.0 },
+      { dayOfWeek: day, startHour: 18, endHour: 22, bidModifier: 1.0 },
+    ],
+  ),
+  { dayOfWeek: 'SATURDAY', startHour: 9, endHour: 20, bidModifier: 1.0 },
+  { dayOfWeek: 'SUNDAY', startHour: 10, endHour: 20, bidModifier: 0.9 },
+];
+
+// ─── Ortak negatif anahtar listesi (campaign-level) ───────────────────────
+// "iptal" ve "şikayet" çıkarıldı (yeni müşteri 'iptal koşulları' arayabilir).
+// "ücretsiz" çıkarıldı ('ücretsiz danışmanlık' değerli arama).
+// "nedir", "wikipedia", "video", "pdf", "blog" eklendi: bilgi araması.
+// "iş ilanı", "staj", "kariyer", "maaş" iş arayanları eler.
+// Aggregator rakipler (koalay, sigortam.net vb.) eklendi.
+const SHARED_NEGATIVES: KeywordItem[] = [
+  neg('iş ilanı', 'BROAD'),
+  neg('iş başvurusu', 'BROAD'),
+  neg('staj', 'BROAD'),
+  neg('eğitim', 'BROAD'),
+  neg('kariyer', 'BROAD'),
+  neg('maaş', 'BROAD'),
+  neg('hile', 'BROAD'),
+  neg('forum', 'BROAD'),
+  neg('nedir', 'BROAD'),
+  neg('nasıl çalışır', 'BROAD'),
+  neg('wikipedia', 'BROAD'),
+  neg('vikipedi', 'BROAD'),
+  neg('video', 'BROAD'),
+  neg('pdf', 'BROAD'),
+  neg('örnek poliçe', 'BROAD'),
+  neg('şartname', 'BROAD'),
+  neg('genel şartlar', 'BROAD'),
+  neg('blog', 'BROAD'),
+  neg('bedava', 'BROAD'),
+  // Aggregator rakipleri — kendi marka kampanyamız yokken kapatıyoruz.
+  // Eğer ileride brand kampanyası açılırsa o kampanyada bu negative'leri kaldır.
+  neg('koalay', 'PHRASE'),
+  neg('sigortam.net', 'PHRASE'),
+  neg('hesapkurdu', 'PHRASE'),
+  neg('sigortayeri', 'PHRASE'),
+  neg('sigortadukkanim', 'PHRASE'),
+];
+
+// İstanbul'da yoğun çalıştığımız ilçeler — keyword varyasyonu için.
 const ISTANBUL_LOCATIONS = [
   'beylikdüzü',
   'esenyurt',
@@ -118,24 +125,128 @@ const ISTANBUL_LOCATIONS = [
   'istanbul',
 ];
 
-// Tüm ürünler için ortak negatifler
-const GENERIC_NEGATIVES: KeywordItem[] = [
-  neg('ücretsiz', 'BROAD'),
-  neg('bedava', 'BROAD'),
-  neg('iş ilanı', 'BROAD'),
-  neg('iş başvurusu', 'BROAD'),
-  neg('staj', 'BROAD'),
-  neg('eğitim', 'BROAD'),
-  neg('hile', 'BROAD'),
-  neg('forum', 'BROAD'),
-  neg('şikayet', 'BROAD'),
-  neg('iptal', 'BROAD'),
-];
+// ─── Sitelink builder (dönüşüm odaklı) ────────────────────────────────────
+// Eski sitelink seti tamamı bilgi sayfalarına (hakkımızda/sss/iletişim)
+// gidiyordu. Yeni set 4 farklı dönüşüm kanalına dağıtıyor: WhatsApp,
+// ürün-spesifik action sayfası, ürün detay sayfası, SSS.
+
+interface ProductCopy {
+  label: string;
+  /** Sitelink #1 — Action: ürüne özel hızlı vaat (≤25). */
+  actionTitle: string;
+  actionDesc1: string;
+  actionDesc2: string;
+  actionPath?: string; // varsayılan: /teklif/{slug}
+  /** WhatsApp prefill mesajı. */
+  waMessage: string;
+}
+
+const PRODUCT_COPY: Record<InsuranceSlug, ProductCopy> = {
+  'tamamlayici-saglik': {
+    label: 'Tamamlayıcı Sağlık',
+    actionTitle: 'Anlaşmalı Hastaneyi Sor',
+    actionDesc1: 'Sana özel hastane listesi',
+    actionDesc2: 'Allianz dahil 8 şirket fiyatı',
+    waMessage: 'Merhaba, tamamlayıcı sağlık sigortası için teklif istiyorum.',
+  },
+  'moduler-saglik': {
+    label: 'Modüler Sağlık',
+    actionTitle: 'SGK\'sız Sağlık Teklifi',
+    actionDesc1: 'Tüm özel hastanelerde geçerli',
+    actionDesc2: 'Doğum, çocuk, yurt dışı dahil',
+    waMessage: 'Merhaba, modüler/özel sağlık sigortası için teklif istiyorum.',
+  },
+  kasko: {
+    label: 'Kasko',
+    actionTitle: 'Plakayla Hızlı Teklif',
+    actionDesc1: 'Tek plakayla 5 dakikada',
+    actionDesc2: '8 şirket yan yana fiyat',
+    waMessage: 'Merhaba, kasko teklifi almak istiyorum. Plakam: ',
+  },
+  trafik: {
+    label: 'Trafik Sigortası',
+    actionTitle: 'Plakayla 5 Dakika',
+    actionDesc1: 'Zorunlu trafik anında',
+    actionDesc2: 'Dijital poliçe mailine',
+    waMessage: 'Merhaba, trafik sigortası teklifi almak istiyorum. Plakam: ',
+  },
+  konut: {
+    label: 'Konut Sigortası',
+    actionTitle: 'Adresle Konut Teklifi',
+    actionDesc1: 'Yangın, su, hırsızlık, deprem',
+    actionDesc2: '8 şirket yan yana fiyat',
+    waMessage: 'Merhaba, konut sigortası için teklif istiyorum.',
+  },
+  isyeri: {
+    label: 'İşyeri Sigortası',
+    actionTitle: 'KOBİ Risk Analizi',
+    actionDesc1: 'Bina, demirbaş, stok, çalışan',
+    actionDesc2: 'Sektöre özel teminat seti',
+    waMessage: 'Merhaba, işyeri sigortası için teklif istiyorum.',
+  },
+  dask: {
+    label: 'DASK',
+    actionTitle: 'DASK Yenileme',
+    actionDesc1: 'Süre dolduysa anında',
+    actionDesc2: 'AKDM onaylı poliçe',
+    waMessage: 'Merhaba, DASK teklifi/yenilemesi istiyorum. Adresim: ',
+  },
+  'seyahat-saglik': {
+    label: 'Seyahat Sağlık',
+    actionTitle: 'Schengen Vize Sigortası',
+    actionDesc1: 'Konsolosluk onaylı paket',
+    actionDesc2: 'Anlık e-poliçe',
+    waMessage: 'Merhaba, Schengen seyahat sağlık sigortası istiyorum.',
+  },
+};
+
+function buildSharedSitelinks(slug: InsuranceSlug): SitelinkAsset[] {
+  const p = PRODUCT_COPY[slug];
+  const actionPath = p.actionPath || `/teklif/${slug}`;
+  return [
+    {
+      text: p.actionTitle,
+      description1: p.actionDesc1,
+      description2: p.actionDesc2,
+      finalUrl: new URL(actionPath, SITE).toString(),
+    },
+    {
+      text: 'WhatsApp\'tan Yaz',
+      description1: 'Sabit hat, hemen cevap',
+      description2: 'Soner Bey ya da ekip yanıtlar',
+      finalUrl: waUrl(p.waMessage),
+    },
+    {
+      text: `${p.label} Detay`,
+      description1: 'Kapsam, fiyat, teminat',
+      description2: 'Anlaşmalı şirketler, SSS',
+      finalUrl: new URL(`/sigortalar/${slug}`, SITE).toString(),
+    },
+    {
+      text: 'Sıkça Sorulanlar',
+      description1: 'Sigorta hakkında merak edilenler',
+      description2: 'Örnek senaryolar, hızlı cevaplar',
+      finalUrl: new URL('/sss', SITE).toString(),
+    },
+  ];
+}
+
+function buildLandingUrl(product: InsuranceSlug, campaignSlug: string): string {
+  const url = new URL(`/teklif/${product}`, SITE);
+  url.searchParams.set('utm_source', 'google');
+  url.searchParams.set('utm_medium', 'cpc');
+  url.searchParams.set('utm_campaign', campaignSlug);
+  return url.toString();
+}
 
 export interface CampaignTemplate {
   product: InsuranceSlug;
   label: string;
   defaultBudgetTry: number;
+  /**
+   * Hesap 30+ dönüşüm topladıktan sonra TARGET_CPA'ya geçildiğinde
+   * önerilen hedef CPA. Default bidding `MAXIMIZE_CONVERSIONS`.
+   */
   defaultTargetCpaTry?: number;
   build: () => Omit<Campaign, 'id' | 'resourceName' | 'metrics'>;
 }
@@ -155,7 +266,8 @@ const tamamlayiciSaglik: CampaignTemplate = {
       status: 'PAUSED',
       advertisingChannelType: 'SEARCH',
       budgetDailyTry: 80,
-      biddingStrategy: { type: 'TARGET_CPA', targetCpaMicros: tryToMicros(220) },
+      // İlk 30 günde Google'a öğrenme alanı tanı; sonra TARGET_CPA (~220 TL).
+      biddingStrategy: { type: 'MAXIMIZE_CONVERSIONS' },
       geoTargets: [{ geoTargetConstant: '2792', label: 'Türkiye' }],
       insuranceProduct: 'tamamlayici-saglik',
       adGroups: [
@@ -163,18 +275,20 @@ const tamamlayiciSaglik: CampaignTemplate = {
           name: 'TSS - Genel Niyet',
           status: 'PAUSED',
           keywords: [
-            kw('tamamlayıcı sağlık sigortası', 'PHRASE'),
-            kw('tamamlayıcı sağlık sigortası teklif', 'PHRASE'),
+            // BROAD anchor (Smart Bidding'in genişlemesi için 1-2 broad)
+            kw('tamamlayıcı sağlık sigortası', 'BROAD'),
+            kw('tss teklif', 'BROAD'),
+            // EXACT yüksek-niyet aramaları
+            kw('tss', 'EXACT'),
+            kw('tamamlayıcı sağlık sigortası teklif', 'EXACT'),
+            // PHRASE long-tail
             kw('tamamlayıcı sağlık sigortası fiyat', 'PHRASE'),
             kw('tamamlayıcı sağlık sigortası 2026', 'PHRASE'),
             kw('tamamlayıcı sağlık sigortası ne kadar', 'PHRASE'),
             kw('tamamlayıcı sağlık sigortası hangi hastane', 'PHRASE'),
-            kw('tss', 'EXACT'),
-            kw('tss teklif', 'EXACT'),
             kw('ssk fark ödeme', 'PHRASE'),
             kw('özel hastanede fark ödememe', 'PHRASE'),
             kw('allianz tamamlayıcı sağlık', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
           ],
           ads: [
             {
@@ -182,27 +296,27 @@ const tamamlayiciSaglik: CampaignTemplate = {
               path1: 'tamamlayici-saglik',
               path2: 'teklif',
               headlines: [
-                'TSS Teklif - 60 Saniyede',
-                'Tamamlayıcı Sağlık Teklifi',
-                'SSK Fark Ödemeyin',
-                'Özel Hastane Fark Yok',
-                'Allianz TSS Acentesi',
-                '8 Şirketten Karşılaştırma',
-                'Beylikdüzü TSS - Mavi Sigorta',
-                '25 Yıllık Deneyim',
-                'Soner Bey 30dk\'da Arar',
-                'Ücretsiz TSS Teklifi',
-                'Online TSS Başvurusu',
-                'TSS Anlaşmalı Hastane',
-                '60 Saniyede Online Teklif',
-                'KVKK Uyumlu - Güvenli',
-                'Hızlı Poliçe Düzenleme',
+                'TSS Teklifin 5 Dakikada',
+                'Özel Hastanede Fark Sıfır',
+                'SGK Üstüne TSS Tam Kapsam',
+                'Hangi Hastane Anlaşmalı?',
+                '8 Şirket Yan Yana Fiyat',
+                'Allianz TSS Yetkili Aracı',
+                'Beylikdüzü\'nden Tek Tıkla',
+                '30 Dakikada Geri Dönüyoruz',
+                'TSS\'i Telefonsuz Karşılaştır',
+                'Numaranı Paylaşmıyoruz',
+                'SGK\'lıysan TSS Avantajlı',
+                'Bir Formla Fiyatın Önünde',
+                'Faturayı Hastane Çeker',
+                'Mavi Sigorta 25 Yıl Beylikdüzü',
+                'TSS Yenilemen de Bizden',
               ],
               descriptions: [
-                '60 saniyede online formu doldur, 8 sigorta şirketinden karşılaştırmalı TSS teklifi al.',
-                'SSK anlaşmalı özel hastanelerde fark ödemeden tedavi. Allianz TSS uzmanı acente.',
-                'Soner Bey 30 dakika içinde sizi arar, ihtiyacınıza özel en uygun TSS poliçesini önerir.',
-                'Beylikdüzü\'nün 25 yıllık sigorta acentesi. Telefonunuzu 3. taraflarla paylaşmıyoruz.',
+                '60 saniyede formu doldur, Allianz dahil 8 şirketten karşılaştırmalı TSS teklifini gör.',
+                'SGK anlaşmalı özel hastanede fark ödemiyorsun. Faturayı hastane direkt sigortaya çıkarır.',
+                'Hangi hastane anlaşmalı, hangisi değil. Sana özel listeyi 30 dakikada gönderiyoruz.',
+                'Beylikdüzü ofisten 25 yıldır TSS yazıyoruz. Numaranı üçüncü taraflarla paylaşmıyoruz.',
               ],
             },
           ],
@@ -211,11 +325,11 @@ const tamamlayiciSaglik: CampaignTemplate = {
           name: 'TSS - Lokasyon (Beylikdüzü+çevre)',
           status: 'PAUSED',
           keywords: [
+            kw('beylikdüzü sigorta acentesi', 'BROAD'),
+            kw('beylikdüzü tamamlayıcı sağlık', 'EXACT'),
             ...ISTANBUL_LOCATIONS.map((loc) => kw(`tamamlayıcı sağlık sigortası ${loc}`, 'PHRASE')),
             ...ISTANBUL_LOCATIONS.map((loc) => kw(`${loc} tamamlayıcı sağlık`, 'PHRASE')),
-            kw('beylikdüzü sigorta acentesi', 'PHRASE'),
             kw('esenyurt sağlık sigortası', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
           ],
           ads: [
             {
@@ -223,27 +337,27 @@ const tamamlayiciSaglik: CampaignTemplate = {
               path1: 'beylikduzu',
               path2: 'tss',
               headlines: [
-                'TSS Beylikdüzü Acentesi',
+                'Beylikdüzü TSS Acentesi',
                 'Esenyurt TSS Teklif',
                 'Avcılar Tamamlayıcı Sağlık',
                 'Büyükçekmece TSS',
-                'İstanbul TSS - 60sn',
-                'Mavi Sigorta - 25 Yıl',
-                'Bölgenin Güvenilir Acentesi',
-                '8 Şirket Tek Form',
-                'Allianz TSS Uzmanı',
-                'SSK Hastanesi Fark Yok',
-                'TSS Karşılaştırma',
-                'Online TSS Başvuru',
-                'KVKK Onaylı Acente',
-                'Soner Bey 30dk\'da Arar',
-                'Ücretsiz TSS Teklifi',
+                'İstanbul\'da 5 Dakika TSS',
+                'Mahalle Acentesi, Direkt İş',
+                'Anlaşmalı Hastaneyi Sor',
+                'Form 60sn, Cevap 30dk',
+                '8 Şirket Yan Yana Fiyat',
+                'Allianz TSS Aracılığı',
+                'TSS Yenilemen de Buradan',
+                'SGK Üstüne TSS, Cebine Az',
+                'Hemen WhatsApp\'tan Yaz',
+                'Soner Bey 25 Yıldır Burada',
+                'Telefonsuz Tek Form',
               ],
               descriptions: [
-                'Beylikdüzü, Esenyurt, Avcılar bölgesinin 25 yıllık TSS acentesi Mavi Sigorta.',
-                'Yaşadığınız bölgedeki anlaşmalı hastane listesi + en uygun fiyat 30 dakikada.',
-                'Telefonunuzu sadece teklif için kullanırız. KVKK uyumlu, güvenli işlem.',
-                'Online formu doldurun, Soner Bey en kısa sürede sizi arasın.',
+                'Beylikdüzü, Esenyurt, Avcılar. 25 yıldır mahalleden mahalleye TSS yazıyoruz.',
+                'Bölgendeki anlaşmalı hastane listesi ve en uygun fiyat 30 dakikada elinde.',
+                'Numaranı sadece tekliften sonra arıyoruz, kimseyle paylaşmıyoruz.',
+                'Online formu doldur, WhatsApp\'tan ya da sabit hattan biz dönüyoruz.',
               ],
             },
           ],
@@ -267,7 +381,7 @@ const modulerSaglik: CampaignTemplate = {
       status: 'PAUSED',
       advertisingChannelType: 'SEARCH',
       budgetDailyTry: 60,
-      biddingStrategy: { type: 'TARGET_CPA', targetCpaMicros: tryToMicros(300) },
+      biddingStrategy: { type: 'MAXIMIZE_CONVERSIONS' },
       geoTargets: [{ geoTargetConstant: '2792', label: 'Türkiye' }],
       insuranceProduct: 'moduler-saglik',
       adGroups: [
@@ -275,15 +389,16 @@ const modulerSaglik: CampaignTemplate = {
           name: 'Modüler Sağlık - Genel',
           status: 'PAUSED',
           keywords: [
-            kw('modüler sağlık sigortası', 'PHRASE'),
-            kw('özel sağlık sigortası', 'PHRASE'),
+            kw('özel sağlık sigortası', 'BROAD'),
+            kw('modüler sağlık sigortası', 'BROAD'),
+            kw('özel sağlık sigortası teklif', 'EXACT'),
+            kw('modüler sağlık sigortası', 'EXACT'),
             kw('sgk\'sız özel sağlık sigortası', 'PHRASE'),
             kw('sgk olmadan sağlık sigortası', 'PHRASE'),
             kw('kapsamlı sağlık sigortası', 'PHRASE'),
             kw('özel sağlık sigortası fiyat', 'PHRASE'),
             kw('özel sağlık sigortası karşılaştır', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
-            neg('tamamlayıcı', 'PHRASE'),
+            kw('yurt dışı tedavi sigortası', 'PHRASE'),
           ],
           ads: [
             {
@@ -291,27 +406,70 @@ const modulerSaglik: CampaignTemplate = {
               path1: 'moduler-saglik',
               path2: 'teklif',
               headlines: [
-                'Modüler Sağlık Sigortası',
-                'SGK\'sız Özel Sağlık',
+                'Modüler Sağlık 5 Dakika',
+                'SGK Olmadan Özel Sağlık',
                 'Tüm Özel Hastanelerde',
-                'Geniş Kapsamlı Poliçe',
-                '60 Saniyede Teklif',
                 'Kapsamlı Sağlık Güvencesi',
-                '8 Şirketten Teklif',
-                'Soner Bey 30dk\'da Arar',
-                'Mavi Sigorta - 25 Yıl',
-                'Online Modüler Sağlık',
-                'Ücretsiz Karşılaştırma',
-                'Beylikdüzü Acentesi',
-                'KVKK Onaylı',
-                'Hızlı Poliçe Düzenleme',
-                'Yurt Dışı Tedavi Desteği',
+                'Yurt Dışı Tedavi Dahil',
+                'Özel Oda + Check-up',
+                'Allianz Aracılığında',
+                'Doğum & Kronik Kapsamı',
+                'Yan Yana 8 Şirket Fiyat',
+                'Beylikdüzü 25 Yıl Yerinde',
+                'Form 60sn, Cevap 30dk',
+                'Numaranı Satmıyoruz',
+                'Modüleri Hemen Sor',
+                'WhatsApp\'tan Anında',
+                'Aile Paketi Avantajlı',
               ],
               descriptions: [
-                'SGK\'dan bağımsız, Türkiye\'deki tüm özel hastanelerde geçerli modüler sağlık güvencesi.',
-                'Geniş kapsam, özel oda, check-up, yurt dışı tedavi. 8 şirketten karşılaştırma.',
-                'Online formu 60 saniyede doldurun, 30 dakikada Soner Bey size en uygun teklifi sunar.',
-                '25 yıllık deneyimle Mavi Sigorta\'da modüler sağlık poliçesi.',
+                'SGK yok mu? Sorun değil. Tüm özel hastanelerde geçerli modüler sağlık güvencesi.',
+                'Geniş kapsam, özel oda, doğum, check-up, yurt dışı tedavi. 8 şirketten teklif.',
+                '60 saniyede formu doldur, 30 dakika içinde size en uygun planı çıkarıyoruz.',
+                'Allianz Aracılık Hizmetleri olarak 25 yıldır Beylikdüzü\'nden çalışıyoruz.',
+              ],
+            },
+          ],
+        },
+        {
+          name: 'Modüler Sağlık - İstanbul',
+          status: 'PAUSED',
+          keywords: [
+            kw('istanbul özel sağlık sigortası', 'BROAD'),
+            kw('beylikdüzü özel sağlık', 'EXACT'),
+            kw('beylikdüzü özel sağlık sigortası', 'PHRASE'),
+            kw('esenyurt özel sağlık sigortası', 'PHRASE'),
+            kw('avcılar özel sağlık sigortası', 'PHRASE'),
+            kw('bakırköy özel sağlık sigortası', 'PHRASE'),
+            kw('bahçeşehir sağlık sigortası', 'PHRASE'),
+          ],
+          ads: [
+            {
+              finalUrl: url,
+              path1: 'beylikduzu',
+              path2: 'moduler',
+              headlines: [
+                'İstanbul Modüler Sağlık',
+                'Beylikdüzü Özel Sağlık',
+                'Esenyurt SGK\'sız Sağlık',
+                'Bakırköy Modüler Sağlık',
+                'Avcılar Sağlık Sigortası',
+                'Bahçeşehir Modüler',
+                'Soner Bey Beylikdüzü',
+                '5 Dakika Form, 30dk Dönüş',
+                'Allianz Aracı, Beylikdüzü',
+                '8 Şirket Yan Yana Fiyat',
+                'Yurt Dışı Tedavi Dahil',
+                'Çocuk + Yetişkin Paketi',
+                'Doğum Paketleri Var',
+                'Numaranı Paylaşmıyoruz',
+                'Hemen WhatsApp\'tan Yaz',
+              ],
+              descriptions: [
+                'Beylikdüzü ofisten Marmara\'nın her noktasına modüler sağlık poliçesi yazıyoruz.',
+                'Tüm özel hastanelerde geçerli, doğum ve çocuk paketi dahil seçenekler.',
+                'Bir formla 8 şirketten teklif görüyorsun, karar senin. Biz 30 dakikada arıyoruz.',
+                '25 yıl yerinde sigortacılık, WhatsApp hattı açık, numara paylaşımı yok.',
               ],
             },
           ],
@@ -324,18 +482,18 @@ const modulerSaglik: CampaignTemplate = {
 // ─── 3) Kasko ─────────────────────────────────────────────────────────────
 const kasko: CampaignTemplate = {
   product: 'kasko',
-  label: 'Kasko - 30 Saniye Teklif',
+  label: 'Kasko - 5 Dakika Teklif',
   defaultBudgetTry: 120,
   defaultTargetCpaTry: 80,
   build: () => {
-    const slug = 'kasko-30sn';
+    const slug = 'kasko-5dk';
     const url = buildLandingUrl('kasko', slug);
     return {
-      name: 'Kasko - 30sn Teklif [İstanbul]',
+      name: 'Kasko - 5dk Teklif [İstanbul]',
       status: 'PAUSED',
       advertisingChannelType: 'SEARCH',
       budgetDailyTry: 120,
-      biddingStrategy: { type: 'TARGET_CPA', targetCpaMicros: tryToMicros(80) },
+      biddingStrategy: { type: 'MAXIMIZE_CONVERSIONS' },
       geoTargets: [{ geoTargetConstant: '2792', label: 'Türkiye' }],
       insuranceProduct: 'kasko',
       adGroups: [
@@ -343,45 +501,85 @@ const kasko: CampaignTemplate = {
           name: 'Kasko - Genel Niyet',
           status: 'PAUSED',
           keywords: [
-            kw('kasko teklif', 'PHRASE'),
-            kw('kasko fiyat', 'PHRASE'),
+            kw('kasko teklif', 'BROAD'),
+            kw('kasko fiyat', 'BROAD'),
+            kw('plaka ile kasko teklifi', 'EXACT'),
+            kw('online kasko teklifi', 'EXACT'),
             kw('kasko sigorta', 'PHRASE'),
             kw('kasko hesaplama', 'PHRASE'),
             kw('en ucuz kasko', 'PHRASE'),
-            kw('online kasko teklifi', 'PHRASE'),
-            kw('plaka ile kasko teklifi', 'PHRASE'),
             kw('araç kasko fiyatları', 'PHRASE'),
             kw('kasko sigorta karşılaştır', 'PHRASE'),
             kw('kasko 2026 fiyatları', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
           ],
           ads: [
             {
               finalUrl: url,
               path1: 'kasko',
-              path2: '30sn',
+              path2: '5dk',
               headlines: [
-                'Kasko Teklifi - 30 Saniye',
-                'Plaka ile Kasko Fiyatı',
-                '8 Şirketten Kasko',
-                'En Uygun Kasko Fiyatı',
-                'Online Kasko Teklif',
-                'Kasko Karşılaştırma',
-                'İkame Araç Hizmeti',
+                'Kasko Teklifin 5 Dakikada',
+                'Plakayı Yaz, Fiyatı Gör',
+                '8 Şirket Yan Yana Kasko',
+                'İkame Araç Dahil Plan',
+                'Hasarsızlık İndirimin Aynen',
+                'Deprem + Sel + Yangın',
+                'Allianz Kasko Aracı',
+                'Cam, Çizik, Tampon',
+                'Online Onay, Anında Poliçe',
+                'Numaranı Satmıyoruz',
                 'Beylikdüzü Kasko Acentesi',
-                'Soner Bey 30dk\'da Arar',
-                'Mavi Sigorta - 25 Yıl',
-                'Hızlı Poliçe Düzenleme',
-                'Kasko Hasar Takibi',
-                'Hasarsızlık İndirimi',
-                'Deprem & Sel Teminatı',
-                'KVKK Uyumlu - Güvenli',
+                'Mavi Sigorta 25 Yıl',
+                'Hemen WhatsApp\'tan Yaz',
+                '30 Dakikada Geri Dönüyoruz',
+                'Hasar Dosyanı Biz Açarız',
               ],
               descriptions: [
-                'Plakanızı yazın, 30 saniyede 8 sigorta şirketinden karşılaştırmalı kasko teklifi alın.',
-                'Çarpışma, çalınma, yangın, doğal afet teminatları. İkame araç dahil seçenekler.',
-                'Online formu doldurun, Soner Bey 30 dakika içinde en uygun teklifi sunar.',
-                'Beylikdüzü\'nün 25 yıllık sigorta acentesi. Hızlı poliçe, kolay hasar süreci.',
+                'Plakanı yaz, 5 dakikada 8 sigorta şirketinden yan yana kasko fiyatlarını gör.',
+                'İkame araç, cam çizik, doğal afet teminatları. Kapsamı sen seçiyorsun.',
+                'Hasarsızlık indirimini koruyoruz. Hasar dosyanı bizzat biz takip ediyoruz.',
+                'Beylikdüzü ofisten 25 yıllık kasko deneyimi. Numaranı kimseyle paylaşmıyoruz.',
+              ],
+            },
+          ],
+        },
+        {
+          name: 'Kasko - Lokasyon (İstanbul+çevre)',
+          status: 'PAUSED',
+          keywords: [
+            kw('istanbul kasko teklifi', 'BROAD'),
+            kw('beylikdüzü kasko', 'EXACT'),
+            ...ISTANBUL_LOCATIONS.map((loc) => kw(`${loc} kasko`, 'PHRASE')),
+            kw('bakırköy kasko', 'PHRASE'),
+            kw('plakayla kasko teklifi istanbul', 'PHRASE'),
+          ],
+          ads: [
+            {
+              finalUrl: url,
+              path1: 'beylikduzu',
+              path2: 'kasko',
+              headlines: [
+                'Beylikdüzü Kasko 5 Dakika',
+                'Esenyurt Kasko Teklifi',
+                'Avcılar Kasko Fiyatı',
+                'Büyükçekmece Kasko',
+                'Bakırköy Plaka Kasko',
+                'Bahçeşehir Plakayla',
+                'İstanbul 8 Şirket Kasko',
+                'Mavi Sigorta Beylikdüzü',
+                'Allianz Kasko Aracılığı',
+                'Mahalle Acentesi, Direkt İş',
+                'Hasarda Bizzat Yanında',
+                'İkame Araç Dahil',
+                'Online Onay Anında Poliçe',
+                'Hemen WhatsApp\'tan Yaz',
+                '30 Dakikada Geri Dönüyoruz',
+              ],
+              descriptions: [
+                'Beylikdüzü, Esenyurt, Avcılar, Bakırköy. Plakanla 5 dakikada kasko fiyatını gör.',
+                'Hasarda Soner Bey ya da ofisten arkadaşlarımız bizzat takip ediyor.',
+                '25 yıl mahalle acentesi. İkame araç, deprem, sel teminatları seçeneklerde.',
+                'Numaranı sadece teklif için kullanıyoruz, üçüncü taraflarla paylaşmıyoruz.',
               ],
             },
           ],
@@ -405,7 +603,7 @@ const trafik: CampaignTemplate = {
       status: 'PAUSED',
       advertisingChannelType: 'SEARCH',
       budgetDailyTry: 60,
-      biddingStrategy: { type: 'TARGET_CPA', targetCpaMicros: tryToMicros(50) },
+      biddingStrategy: { type: 'MAXIMIZE_CONVERSIONS' },
       geoTargets: [{ geoTargetConstant: '2792', label: 'Türkiye' }],
       insuranceProduct: 'trafik',
       adGroups: [
@@ -413,15 +611,15 @@ const trafik: CampaignTemplate = {
           name: 'Trafik - Genel',
           status: 'PAUSED',
           keywords: [
-            kw('trafik sigortası', 'PHRASE'),
+            kw('trafik sigortası', 'BROAD'),
+            kw('zorunlu trafik sigortası', 'BROAD'),
+            kw('plaka ile trafik sigortası', 'EXACT'),
+            kw('online trafik sigortası', 'EXACT'),
             kw('trafik sigortası fiyat', 'PHRASE'),
             kw('trafik sigortası teklif', 'PHRASE'),
-            kw('zorunlu trafik sigortası', 'PHRASE'),
-            kw('plaka ile trafik sigortası', 'PHRASE'),
-            kw('online trafik sigortası', 'PHRASE'),
             kw('trafik sigortası hesaplama', 'PHRASE'),
             kw('en ucuz trafik sigortası', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
+            kw('trafik sigortası 2026', 'PHRASE'),
           ],
           ads: [
             {
@@ -429,27 +627,27 @@ const trafik: CampaignTemplate = {
               path1: 'trafik',
               path2: 'plaka',
               headlines: [
-                'Trafik Sigortası - Plaka ile',
-                'Online Trafik Teklif',
-                '4 Şirketten Karşılaştırma',
-                'Hızlı Poliçe Düzenleme',
-                '60 Saniyede Teklif',
-                'Trafik Sigortası 2026',
-                'En Uygun Trafik Fiyatı',
-                'Beylikdüzü Acente',
-                'Mavi Sigorta - 25 Yıl',
-                'Soner Bey Arar',
-                'Hasarsızlık İndirimi',
-                'Online Poliçe Teslim',
-                'KVKK Uyumlu',
-                'Zorunlu Trafik Sigortası',
+                'Trafik Sigortası 5 Dakika',
+                'Plakanı Yaz, Fiyatı Gör',
+                'Zorunlu Trafik, Hemen',
+                '4 Şirket Yan Yana Fiyat',
+                'Hasarsızlık İndirimin Sağlam',
+                'Online Onay, Dijital Poliçe',
+                'En Uygun Trafik 2026',
+                'Beylikdüzü Trafik Acentesi',
+                'Mavi Sigorta 25 Yıl',
+                'Anlaşmalı 4 Şirket',
+                'Allianz Trafik Aracılığı',
+                'Numaranı Paylaşmıyoruz',
+                'Hemen WhatsApp\'tan Yaz',
                 '7/24 Hasar Hattı',
+                'Trafik + Kasko Cebe Yakın',
               ],
               descriptions: [
-                'Plakanızı yazın, 4 sigorta şirketinden karşılaştırmalı trafik sigortası teklifi alın.',
-                'Online işlem ve dijital poliçe teslimi. Hasarsızlık indiriminiz aynen geçerli.',
-                'Mavi Sigorta\'nın 25 yıllık deneyimiyle hızlı ve uygun trafik sigortası.',
-                'KVKK uyumlu, güvenli işlem; telefon numaranızı sadece teklif için kullanırız.',
+                'Plakanı yaz, 5 dakikada 4 şirketten zorunlu trafik fiyatını yan yana gör.',
+                'Hasarsızlık indirimin aynen geçer. Dijital poliçe anında mailine düşer.',
+                'Beylikdüzü\'nün 25 yıllık acentesi Mavi Sigorta\'dan hızlı ve uygun trafik.',
+                'Numaranı sadece teklif için kullanıyoruz, üçüncü taraflarla paylaşmıyoruz.',
               ],
             },
           ],
@@ -460,6 +658,9 @@ const trafik: CampaignTemplate = {
 };
 
 // ─── 5) Konut ─────────────────────────────────────────────────────────────
+// NOT: Bu kampanya başlangıçta Türkiye'yi hedefliyor; Marmara'ya geçtiğinde
+// CPC düşer. Operatör Google Ads UI'sından `geoTargets`'a İstanbul + çevre
+// constant ID'lerini ekleyebilir (bkz: docs/GOOGLE_ADS_AUDIT.md).
 const konut: CampaignTemplate = {
   product: 'konut',
   label: 'Konut Sigortası - Deprem & Yangın',
@@ -473,7 +674,7 @@ const konut: CampaignTemplate = {
       status: 'PAUSED',
       advertisingChannelType: 'SEARCH',
       budgetDailyTry: 50,
-      biddingStrategy: { type: 'TARGET_CPA', targetCpaMicros: tryToMicros(90) },
+      biddingStrategy: { type: 'MAXIMIZE_CONVERSIONS' },
       geoTargets: [{ geoTargetConstant: '2792', label: 'Türkiye' }],
       insuranceProduct: 'konut',
       adGroups: [
@@ -481,15 +682,15 @@ const konut: CampaignTemplate = {
           name: 'Konut - Genel',
           status: 'PAUSED',
           keywords: [
-            kw('konut sigortası', 'PHRASE'),
+            kw('konut sigortası', 'BROAD'),
+            kw('ev sigortası', 'BROAD'),
+            kw('konut sigortası teklif', 'EXACT'),
+            kw('ev sigortası teklif', 'EXACT'),
             kw('konut sigortası fiyat', 'PHRASE'),
-            kw('ev sigortası', 'PHRASE'),
-            kw('ev sigortası teklif', 'PHRASE'),
             kw('konut paket sigorta', 'PHRASE'),
             kw('deprem sigortası ev', 'PHRASE'),
             kw('ev sigortası hesaplama', 'PHRASE'),
             kw('en uygun konut sigortası', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
           ],
           ads: [
             {
@@ -497,27 +698,27 @@ const konut: CampaignTemplate = {
               path1: 'konut',
               path2: 'teklif',
               headlines: [
-                'Konut Sigortası Teklifi',
-                'Ev Sigortası - 60sn',
-                'Yangın & Su Baskını',
-                'Hırsızlık Güvencesi',
+                'Konut Sigortan 5 Dakikada',
+                'Adresi Yaz, Fiyatı Gör',
+                'Yangın, Su, Hırsızlık',
                 'Cam Kırılması Dahil',
-                '8 Şirketten Karşılaştırma',
-                'Doğal Afet Koruması',
-                'Beylikdüzü Konut Acentesi',
-                'Mavi Sigorta - 25 Yıl',
-                'Soner Bey 30dk\'da Arar',
-                'Online Konut Teklifi',
-                'Ev Eşyası Sigortası',
+                'Deprem + Sel Teminatı',
+                '8 Şirket Yan Yana Fiyat',
+                'Ev Eşyası da Güvende',
                 'Hukuki Koruma Dahil',
-                'KVKK Onaylı',
-                'En Uygun Konut Primi',
+                'Beylikdüzü Konut Acentesi',
+                'Mavi Sigorta 25 Yıl',
+                'Allianz Konut Aracılığı',
+                'Numaranı Paylaşmıyoruz',
+                'Hemen WhatsApp\'tan Yaz',
+                'Hasarda Bizzat Yanında',
+                '30 Dakikada Geri Dönüyoruz',
               ],
               descriptions: [
-                'Yangın, su baskını, hırsızlık ve doğal afet teminatları. 8 sigorta şirketi karşılaştırması.',
-                'Ev eşyası sigortası, cam kırılması ve hukuki koruma dahil paket seçenekleri.',
-                'Online formu doldurun, Soner Bey size en uygun konut sigortası teklifini iletsin.',
-                '25 yıllık deneyimle Beylikdüzü\'nün güvenilir konut sigortası acentesi.',
+                'Adresini yaz, 5 dakikada 8 şirketten konut sigortası fiyatını yan yana gör.',
+                'Yangın, su baskını, hırsızlık, deprem ve cam kırılması teminatları seçimde.',
+                'Ev eşyası ve hukuki koruma da pakette. Beylikdüzü ofisten poliçe anlık.',
+                '25 yıl mahalle acentesi. Numaranı kimseyle paylaşmıyoruz, sadece biz arıyoruz.',
               ],
             },
           ],
@@ -541,7 +742,7 @@ const isyeri: CampaignTemplate = {
       status: 'PAUSED',
       advertisingChannelType: 'SEARCH',
       budgetDailyTry: 50,
-      biddingStrategy: { type: 'TARGET_CPA', targetCpaMicros: tryToMicros(180) },
+      biddingStrategy: { type: 'MAXIMIZE_CONVERSIONS' },
       geoTargets: [{ geoTargetConstant: '2792', label: 'Türkiye' }],
       insuranceProduct: 'isyeri',
       adGroups: [
@@ -549,15 +750,16 @@ const isyeri: CampaignTemplate = {
           name: 'İşyeri - Genel',
           status: 'PAUSED',
           keywords: [
-            kw('işyeri sigortası', 'PHRASE'),
+            kw('işyeri sigortası', 'BROAD'),
+            kw('kobi sigortası', 'BROAD'),
+            kw('işyeri sigortası teklif', 'EXACT'),
+            kw('işyeri paket sigorta', 'EXACT'),
             kw('işyeri sigortası fiyat', 'PHRASE'),
-            kw('işyeri paket sigorta', 'PHRASE'),
-            kw('kobi sigortası', 'PHRASE'),
             kw('mağaza sigortası', 'PHRASE'),
             kw('depo sigortası', 'PHRASE'),
             kw('restoran sigortası', 'PHRASE'),
             kw('işveren mali sorumluluk', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
+            kw('atölye sigortası', 'PHRASE'),
           ],
           ads: [
             {
@@ -565,27 +767,27 @@ const isyeri: CampaignTemplate = {
               path1: 'isyeri',
               path2: 'teklif',
               headlines: [
-                'İşyeri Sigortası Teklifi',
+                'İşyeri Sigortan 5 Dakika',
                 'KOBİ Sigorta Paketi',
-                'Mağaza & Depo Sigortası',
+                'Mağaza, Depo, Atölye',
+                'Restoran ve Ofis Paketi',
                 'İşveren Mali Sorumluluk',
-                'Cam & Stok Teminatı',
-                '60 Saniyede Teklif',
+                'Stok ve Demirbaş Teminatı',
+                'Cam, Hırsızlık, İş Durması',
+                '8 Şirket Yan Yana Fiyat',
                 'Beylikdüzü İşyeri Acentesi',
-                '25 Yıllık Deneyim',
-                'Mavi Sigorta',
-                '8 Şirket Karşılaştırma',
-                'İş Durması Teminatı',
-                'Hırsızlık Güvencesi',
-                'Online İşyeri Sigortası',
-                'KVKK Uyumlu',
-                'Soner Bey Arar',
+                'Mavi Sigorta 25 Yıl',
+                'Allianz İşyeri Aracılığı',
+                'Numaranı Paylaşmıyoruz',
+                'Hemen WhatsApp\'tan Yaz',
+                '30 Dakikada Geri Dönüyoruz',
+                'Risk Analizi Ücretsiz',
               ],
               descriptions: [
-                'İşyeri binası, demirbaş, stok, işveren sorumluluğu — tek paketle güvenceye alın.',
-                'Restoran, mağaza, ofis, depo, atölye için özel teminat paketleri.',
-                'Soner Bey 30 dakika içinde size en uygun KOBİ sigorta paketini sunar.',
-                '25 yıllık deneyimle Beylikdüzü\'nün KOBİ sigorta uzmanı.',
+                'Bina, demirbaş, stok, çalışan, müşteri. Tek poliçeyle her şey bir arada.',
+                'Restoran, ofis, mağaza, depo, atölye için sektöre özel teminatlar.',
+                '5 dakika form, 30 dakikada size en uygun KOBİ sigorta paketini sunuyoruz.',
+                'Beylikdüzü\'nün 25 yıllık ticari sigorta acentesi. Risk analizi ücretsiz.',
               ],
             },
           ],
@@ -609,7 +811,7 @@ const dask: CampaignTemplate = {
       status: 'PAUSED',
       advertisingChannelType: 'SEARCH',
       budgetDailyTry: 40,
-      biddingStrategy: { type: 'TARGET_CPA', targetCpaMicros: tryToMicros(35) },
+      biddingStrategy: { type: 'MAXIMIZE_CONVERSIONS' },
       geoTargets: [{ geoTargetConstant: '2792', label: 'Türkiye' }],
       insuranceProduct: 'dask',
       adGroups: [
@@ -617,15 +819,16 @@ const dask: CampaignTemplate = {
           name: 'DASK - Genel',
           status: 'PAUSED',
           keywords: [
+            kw('dask', 'BROAD'),
+            kw('zorunlu deprem sigortası', 'BROAD'),
             kw('dask', 'EXACT'),
+            kw('dask yenileme', 'EXACT'),
             kw('dask sigortası', 'PHRASE'),
             kw('dask fiyat', 'PHRASE'),
             kw('dask hesaplama', 'PHRASE'),
             kw('deprem sigortası', 'PHRASE'),
-            kw('zorunlu deprem sigortası', 'PHRASE'),
-            kw('dask yenileme', 'PHRASE'),
             kw('dask online', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
+            kw('dask sorgulama', 'PHRASE'),
           ],
           ads: [
             {
@@ -633,27 +836,27 @@ const dask: CampaignTemplate = {
               path1: 'dask',
               path2: 'teklif',
               headlines: [
-                'DASK Teklifi - 60sn',
+                'DASK 5 Dakikada Cebinde',
                 'Zorunlu Deprem Sigortası',
-                'DASK Online Hesaplama',
-                'DASK Yenileme',
-                'Hızlı Poliçe',
+                'Adresi Yaz, Primi Gör',
+                'Tapu Yok, Tapu Sorgudan',
+                'DASK Yenilemen Hemen',
+                'AKDM Onaylı Poliçe',
                 'Beylikdüzü DASK Acentesi',
-                'Mavi Sigorta - 25 Yıl',
-                'En Uygun DASK Fiyatı',
-                'Online DASK Başvurusu',
-                'Soner Bey 30dk\'da Arar',
-                'KVKK Uyumlu',
-                'Tapu ile DASK Teklifi',
-                'DASK Hasar Süreci',
-                'AKDM Onaylı',
-                'Yasal Zorunlu Deprem',
+                'Mavi Sigorta 25 Yıl',
+                'Allianz DASK Aracılığı',
+                'Anında Dijital Poliçe',
+                'Numaranı Paylaşmıyoruz',
+                'Hemen WhatsApp\'tan Yaz',
+                'Online DASK Hesaplama',
+                'Süresi Doldu mu? Hemen',
+                'Yasal Zorunlu, Önceliğin',
               ],
               descriptions: [
-                'Adresinizi yazın, 60 saniyede DASK primi hesaplansın. Hızlı poliçe ve teslim.',
-                'Yasal zorunlu deprem sigortası — Mavi Sigorta\'nın 25 yıllık deneyimiyle.',
-                'Online DASK başvurusu, AKDM onaylı poliçe, anında teslimat.',
-                'KVKK uyumlu işlem. Telefonunuzu 3. taraflarla paylaşmıyoruz.',
+                'Adresini yaz, 5 dakikada DASK primini gör, anında dijital poliçeyi al.',
+                'AKDM onaylı zorunlu deprem sigortası. Beylikdüzü\'nün 25 yıllık DASK acentesi.',
+                'Tapu bilgisi yetiyor, ekstra evrak yok. Yenileme de aynı kolaylıkta.',
+                'Numaranı sadece teklif için kullanıyoruz, üçüncü taraflarla paylaşmıyoruz.',
               ],
             },
           ],
@@ -677,7 +880,7 @@ const seyahat: CampaignTemplate = {
       status: 'PAUSED',
       advertisingChannelType: 'SEARCH',
       budgetDailyTry: 35,
-      biddingStrategy: { type: 'TARGET_CPA', targetCpaMicros: tryToMicros(60) },
+      biddingStrategy: { type: 'MAXIMIZE_CONVERSIONS' },
       geoTargets: [{ geoTargetConstant: '2792', label: 'Türkiye' }],
       insuranceProduct: 'seyahat-saglik',
       adGroups: [
@@ -685,14 +888,14 @@ const seyahat: CampaignTemplate = {
           name: 'Seyahat - Schengen',
           status: 'PAUSED',
           keywords: [
-            kw('seyahat sağlık sigortası', 'PHRASE'),
-            kw('schengen vize sigortası', 'PHRASE'),
-            kw('schengen sigortası', 'PHRASE'),
-            kw('vize için sağlık sigortası', 'PHRASE'),
+            kw('schengen vize sigortası', 'BROAD'),
+            kw('seyahat sağlık sigortası', 'BROAD'),
+            kw('schengen sigortası', 'EXACT'),
+            kw('vize için sağlık sigortası', 'EXACT'),
             kw('yurt dışı sağlık sigortası', 'PHRASE'),
             kw('seyahat sigortası online', 'PHRASE'),
             kw('seyahat sigortası fiyat', 'PHRASE'),
-            ...GENERIC_NEGATIVES,
+            kw('vize sigortası 30 bin euro', 'PHRASE'),
           ],
           ads: [
             {
@@ -700,27 +903,71 @@ const seyahat: CampaignTemplate = {
               path1: 'seyahat-saglik',
               path2: 'schengen',
               headlines: [
-                'Schengen Vize Sigortası',
-                'Seyahat Sağlık Teklifi',
-                'Yurt Dışı Sağlık Güvencesi',
-                'Online Seyahat Sigortası',
-                '60 Saniyede Poliçe',
-                'Mavi Sigorta - 25 Yıl',
-                'Anında Belge',
-                'Schengen Onaylı',
-                'En Uygun Seyahat Sigortası',
-                'Acil Tedavi Teminatı',
-                'Soner Bey Arar',
-                'Beylikdüzü Acente',
-                'Vize için Geçerli',
-                'KVKK Uyumlu',
-                'Online Anında Poliçe',
+                'Schengen Sigortan 5 Dakika',
+                'Vize için Onaylı Poliçe',
+                'Anında E-Poliçe',
+                'Yurt Dışı Acil Tedavi',
+                'Hastane + Ambulans + Nakil',
+                '30 Bin Euro Limit Standart',
+                'Beylikdüzü Seyahat Acentesi',
+                'Mavi Sigorta 25 Yıl',
+                'Allianz Seyahat Aracılığı',
+                'Numaranı Paylaşmıyoruz',
+                'Hemen WhatsApp\'tan Yaz',
+                'Vize Yetiştirmek Acil mi?',
+                'Schengen Onayı Garanti',
+                'Konsolosluk Onaylı',
+                '5 Dakika, Anlık Mail',
               ],
               descriptions: [
-                'Schengen vize başvurusu için onaylı seyahat sağlık sigortası. Anında e-poliçe.',
-                'Yurt dışı acil tedavi, hastane, ambulans, nakil teminatları dahil paket.',
-                'Online formu doldurun, 30 dakika içinde Soner Bey size geri dönsün.',
-                '25 yıllık deneyimle Mavi Sigorta — KVKK uyumlu, güvenli işlem.',
+                'Schengen vize başvurun için konsolosluk onaylı seyahat sağlık sigortası, anlık e-poliçe.',
+                'Yurt dışı acil tedavi, hastane, ambulans ve nakil teminatları paket içinde.',
+                '5 dakikada form, anlık mail. Acil vize randevun varsa hemen WhatsApp\'tan yaz.',
+                '25 yıllık Beylikdüzü acentesi. Numaranı sadece poliçe için kullanıyoruz.',
+              ],
+            },
+          ],
+        },
+        {
+          name: 'Seyahat - Ülke Bazlı',
+          status: 'PAUSED',
+          keywords: [
+            kw('almanya vize sigortası', 'PHRASE'),
+            kw('italya vize sigortası', 'PHRASE'),
+            kw('fransa vize sigortası', 'PHRASE'),
+            kw('ispanya vize sigortası', 'PHRASE'),
+            kw('hollanda vize sigortası', 'PHRASE'),
+            kw('yunanistan vize sigortası', 'PHRASE'),
+            kw('amerika vize sigortası', 'PHRASE'),
+            kw('ingiltere vize sigortası', 'PHRASE'),
+          ],
+          ads: [
+            {
+              finalUrl: url,
+              path1: 'seyahat-saglik',
+              path2: 'vize',
+              headlines: [
+                'Almanya Vize Sigortası',
+                'İtalya Vize Sigortası',
+                'Fransa Vize Sigortası',
+                'İspanya Vize Sigortası',
+                'Hollanda Vize Sigortası',
+                'Yunanistan Vize Sigortası',
+                'Amerika Vize Sigortası',
+                'İngiltere Vize Sigortası',
+                'Schengen Tek Poliçe',
+                '30 Bin Euro Limit Standart',
+                'Anlık E-Poliçe Mailine',
+                'Vize Yetiştirmek Acil mi?',
+                'Konsolosluk Onaylı',
+                'Hemen WhatsApp\'tan Yaz',
+                '5 Dakika, Form Bitti',
+              ],
+              descriptions: [
+                'Almanya, İtalya, Fransa, İspanya, Hollanda — hangi konsolosluk olursa onaylı poliçe.',
+                'Schengen kapsamı tek poliçeyle. 30 bin euro limit, acil tedavi ve nakil dahil.',
+                'Vize randevun yarın mı? 5 dakikada e-poliçen mailine düşer.',
+                'Beylikdüzü ofisten 25 yıllık seyahat sigortası deneyimi. Numara paylaşımı yok.',
               ],
             },
           ],
@@ -730,35 +977,33 @@ const seyahat: CampaignTemplate = {
   },
 };
 
-/** Asset'lerle zenginleştirilmiş template wrapper. */
-function withFullAssets(
-  base: CampaignTemplate,
-  productLabel: string,
-): CampaignTemplate {
+// ─── Wrapper: ortak asset'leri + campaign-level negative'leri ekle ────────
+function withFullAssets(base: CampaignTemplate): CampaignTemplate {
   return {
     ...base,
     build: () => {
       const campaign = base.build();
       return {
         ...campaign,
-        sitelinks: campaign.sitelinks ?? buildSharedSitelinks(base.product, productLabel),
+        sitelinks: campaign.sitelinks ?? buildSharedSitelinks(base.product),
         callouts: campaign.callouts ?? SHARED_CALLOUTS,
         call: campaign.call ?? SHARED_CALL,
         adSchedule: campaign.adSchedule ?? WORKING_HOURS_SCHEDULE,
+        negativeKeywords: campaign.negativeKeywords ?? SHARED_NEGATIVES,
       };
     },
   };
 }
 
 export const CAMPAIGN_TEMPLATES: Record<InsuranceSlug, CampaignTemplate> = {
-  'tamamlayici-saglik': withFullAssets(tamamlayiciSaglik, 'Tamamlayıcı Sağlık'),
-  'moduler-saglik': withFullAssets(modulerSaglik, 'Modüler Sağlık'),
-  kasko: withFullAssets(kasko, 'Kasko'),
-  trafik: withFullAssets(trafik, 'Trafik Sigortası'),
-  konut: withFullAssets(konut, 'Konut Sigortası'),
-  isyeri: withFullAssets(isyeri, 'İşyeri Sigortası'),
-  dask: withFullAssets(dask, 'DASK'),
-  'seyahat-saglik': withFullAssets(seyahat, 'Seyahat Sağlık'),
+  'tamamlayici-saglik': withFullAssets(tamamlayiciSaglik),
+  'moduler-saglik': withFullAssets(modulerSaglik),
+  kasko: withFullAssets(kasko),
+  trafik: withFullAssets(trafik),
+  konut: withFullAssets(konut),
+  isyeri: withFullAssets(isyeri),
+  dask: withFullAssets(dask),
+  'seyahat-saglik': withFullAssets(seyahat),
 };
 
 export function listTemplates(): CampaignTemplate[] {
