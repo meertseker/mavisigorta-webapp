@@ -1,61 +1,71 @@
 import fs from 'fs';
 import path from 'path';
-import { Course, Instructor, SiteSettings } from './types';
+import { Agent, Insurance, InsuranceSlug, SiteSettings } from './types';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
-export function getCourses(): Course[] {
+export function getInsurances(): Insurance[] {
   try {
-    const filePath = path.join(contentDirectory, 'courses.json');
+    const filePath = path.join(contentDirectory, 'insurances.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(fileContents);
+    return JSON.parse(fileContents) as Insurance[];
   } catch (error) {
-    console.error('Error reading courses.json:', error);
+    console.error('Error reading insurances.json:', error);
     return [];
   }
 }
 
-export function getCourseById(id: string): Course | null {
-  const courses = getCourses();
-  return courses.find((course) => course.id === id) || null;
+export function getInsuranceById(id: string): Insurance | null {
+  const insurances = getInsurances();
+  return insurances.find((ins) => ins.id === id) || null;
 }
 
-export function getPopularCourses(): Course[] {
-  return getCourses().filter((course) => course.popular);
+export function getFlagshipInsurances(): Insurance[] {
+  return getInsurances().filter((ins) => ins.popular);
 }
 
-export function getInstructors(): Instructor[] {
+export function getAllInsuranceSlugs(): InsuranceSlug[] {
+  return getInsurances().map((i) => i.id);
+}
+
+export function getAgent(): Agent {
   try {
-    const filePath = path.join(contentDirectory, 'instructors.json');
+    const filePath = path.join(contentDirectory, 'agent.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(fileContents);
+    return JSON.parse(fileContents) as Agent;
   } catch (error) {
-    console.error('Error reading instructors.json:', error);
-    return [];
+    console.error('Error reading agent.json:', error);
+    return {
+      id: 'soner-seker',
+      name: 'Soner Şeker',
+      title: 'Sigorta Acentesi',
+      yearsActive: 25,
+      photo: '/images/instructors/soner-seker.jpg',
+      bio: '',
+      specialties: [],
+      phone: '0532 480 76 17',
+      whatsapp: '905324807617',
+      email: 'info@mavisigorta.net',
+    };
   }
-}
-
-export function getInstructorById(id: string): Instructor | null {
-  const instructors = getInstructors();
-  return instructors.find((instructor) => instructor.id === id) || null;
 }
 
 export function getSiteSettings(): SiteSettings {
   try {
     const filePath = path.join(contentDirectory, 'settings.json');
     const fileContents = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(fileContents);
+    return JSON.parse(fileContents) as SiteSettings;
   } catch (error) {
     console.error('Error reading settings.json:', error);
-    // Return default settings if file doesn't exist
     return {
-      siteName: 'Efe Sürücü Kursu',
-      logo: '/images/logo.png',
+      siteName: 'Mavi Sigorta',
+      logo: '/logo.png',
       contact: {
-        phone: '+90 (212) 555 0123',
-        email: 'info@efesurucukursu.com',
-        address: 'Büyükçekmece, İstanbul',
-        fullAddress: 'Cumhuriyet Mahallesi, Atatürk Caddesi No: 123, Büyükçekmece/İstanbul',
+        phone: '0532 480 76 17',
+        whatsapp: '905324807617',
+        email: 'info@mavisigorta.net',
+        address: 'Beylikdüzü, İstanbul',
+        fullAddress: 'Beylikdüzü, İstanbul',
         mapEmbed: '',
       },
       socialMedia: {},
@@ -65,16 +75,23 @@ export function getSiteSettings(): SiteSettings {
         sunday: 'Kapalı',
       },
       seo: {
-        title: 'Efe Sürücü Kursu',
-        description: 'İstanbul Büyükçekmece Sürücü Kursu',
+        title: 'Mavi Sigorta',
+        description: 'İstanbul Beylikdüzü sigorta acentesi',
         keywords: [],
       },
       features: [],
       stats: {
-        yearsOfExperience: 15,
-        successRate: 95,
-        totalStudents: 5000,
-        instructors: 8,
+        yearsOfExperience: 25,
+        successRate: 98,
+        customersServed: 10000,
+        agentYearsActive: 25,
+        partnerCompanies: 8,
+      },
+      partners: [],
+      companyInfo: {
+        owner: 'Soner Şeker',
+        fullName: 'Mavi Sigorta Allianz Aracılık Hizmetleri',
+        description: '',
       },
     };
   }

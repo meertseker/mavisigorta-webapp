@@ -74,8 +74,8 @@ export default function StatsCard({
 
         {/* Value with counter animation */}
         <div className="mb-2 relative">
-          <motion.span 
-            className="text-5xl font-bold text-white"
+          <motion.span
+            className="text-5xl font-bold bg-gradient-to-r from-primary-red to-secondary-orange bg-clip-text text-transparent"
           >
             {prefix}
             {count.toLocaleString('tr-TR')}
@@ -84,7 +84,7 @@ export default function StatsCard({
         </div>
 
         {/* Label */}
-        <p className="text-white dark:text-white font-medium relative z-10">{label}</p>
+        <p className="text-gray-700 dark:text-gray-200 font-medium relative z-10">{label}</p>
 
         {/* Glass reflection overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent group-hover:from-white/20 rounded-3xl transition-all duration-500 pointer-events-none"></div>

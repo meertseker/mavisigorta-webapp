@@ -28,15 +28,15 @@ export default function Hero({ title, subtitle, primaryCta, secondaryCta, stats 
   }, []);
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-black to-gray-800 py-8 md:py-20">
-      {/* Animated Blue Gradient Background */}
+    <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-sky-100 dark:from-gray-900 dark:via-black dark:to-gray-800 py-8 md:py-20">
+      {/* Animated Soft Blue Blobs Background */}
       <motion.div 
         className="absolute inset-0"
         animate={{ x: mousePos.x, y: mousePos.y }}
         transition={{ type: 'spring', stiffness: 50, damping: 20 }}
       >
         <motion.div
-          className="absolute top-0 left-0 w-[800px] h-[800px] bg-gradient-radial from-primary-red/30 via-primary-red/10 to-transparent rounded-full blur-3xl"
+          className="absolute -top-32 -left-32 w-[800px] h-[800px] bg-gradient-radial from-primary-red/30 via-primary-red/10 to-transparent rounded-full blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             x: ['0%', '20%', '0%'],
@@ -50,13 +50,27 @@ export default function Hero({ title, subtitle, primaryCta, secondaryCta, stats 
         />
         
         <motion.div
-          className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-gradient-radial from-secondary-orange/25 via-secondary-orange/10 to-transparent rounded-full blur-3xl"
+          className="absolute -bottom-32 -right-32 w-[600px] h-[600px] bg-gradient-radial from-secondary-orange/30 via-secondary-orange/10 to-transparent rounded-full blur-3xl"
           animate={{
             scale: [1.2, 1, 1.2],
             x: ['-10%', '10%', '-10%'],
           }}
           transition={{
             duration: 25,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+        />
+
+        <motion.div
+          aria-hidden="true"
+          className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-gradient-radial from-accent-rose/20 via-transparent to-transparent rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.15, 1],
+            opacity: [0.6, 0.9, 0.6],
+          }}
+          transition={{
+            duration: 18,
             repeat: Infinity,
             ease: 'easeInOut',
           }}
@@ -95,7 +109,7 @@ export default function Hero({ title, subtitle, primaryCta, secondaryCta, stats 
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="inline-block mb-4 px-4 py-2 backdrop-blur-xl bg-primary-red/20 border border-primary-red/30 rounded-full"
               >
-                <span className="text-secondary-orange font-semibold text-sm">🛡️ Sigorta Aracılık Hizmetleri</span>
+                <span className="text-secondary-orange font-semibold text-sm">🛡️ Allianz Sigorta Aracılık Hizmetleri</span>
               </motion.div>
 
               <h1 className="text-3xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight text-white">
@@ -328,20 +342,26 @@ export default function Hero({ title, subtitle, primaryCta, secondaryCta, stats 
                 
                 <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 
-                <div className="relative z-10 text-center">
+                <div className="relative z-10 flex flex-col items-center text-center">
                   <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="text-5xl mb-4"
+                    animate={{ scale: [1, 1.04, 1] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                    className="relative w-20 h-20 rounded-full overflow-hidden ring-4 ring-white/40 shadow-glow-orange mb-3"
                   >
-                    📞
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src="/sonerbey.webp"
+                      alt="Soner Şeker"
+                      className="w-full h-full object-cover"
+                    />
                   </motion.div>
-                  <h3 className="text-white font-bold text-xl mb-2">Bize Ulaşın</h3>
-                  <p className="text-gray-300 text-sm mb-4">7/24 Danışmanlık</p>
+                  <h3 className="text-white font-bold text-xl mb-1">Soner Bey'i Arayın</h3>
+                  <p className="text-white/80 text-sm mb-3">7/24 Danışmanlık</p>
                   <a 
                     href="tel:05324807617"
-                    className="block text-secondary-gold hover:text-secondary-amber font-bold text-lg transition-colors"
+                    className="inline-flex items-center gap-2 text-secondary-gold hover:text-secondary-amber font-bold text-lg transition-colors"
                   >
+                    <span aria-hidden="true">📞</span>
                     0532 480 76 17
                   </a>
                 </div>
@@ -367,14 +387,14 @@ export default function Hero({ title, subtitle, primaryCta, secondaryCta, stats 
                 
                 <div className="absolute inset-0 bg-gradient-to-br from-accent-rose/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 
-                <div className="relative z-10 text-center">
+                <div className="relative z-10 flex flex-col items-center text-center">
                   <div className="inline-block p-4 backdrop-blur-xl bg-primary-red/20 rounded-2xl border border-primary-red/30 mb-3">
                     <svg className="w-10 h-10 text-secondary-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <h3 className="text-white font-bold mb-2">Allianz Yetkili</h3>
-                  <p className="text-gray-400 text-sm">Güvenilir sigorta çözümleri</p>
+                  <h3 className="text-white font-bold mb-1">Allianz Yetkili Acente</h3>
+                  <p className="text-white/70 text-sm">+ 7 anlaşmalı sigorta şirketi</p>
                 </div>
               </motion.div>
             </>
@@ -383,15 +403,8 @@ export default function Hero({ title, subtitle, primaryCta, secondaryCta, stats 
         </div>
       </div>
 
-      {/* Glass Wave divider */}
-      <div className="absolute bottom-0 left-0 right-0 pointer-events-none">
-        <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
-          <path
-            d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"
-            fill="rgba(17,24,39,0.5)"
-          />
-        </svg>
-      </div>
+      {/* Subtle bottom fade into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-white dark:to-gray-900 pointer-events-none" />
     </div>
   );
 }

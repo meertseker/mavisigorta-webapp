@@ -44,7 +44,7 @@ export default function Footer({ siteName, phone, email, address, socialMedia }:
                   Mavi Sigorta
                 </span>
                 <span className="text-xs text-gray-400 font-medium mt-0.5">
-                  Aracılık Hizmetleri
+                  Allianz Aracılık Hizmetleri
                 </span>
               </div>
             </div>
@@ -60,7 +60,8 @@ export default function Footer({ siteName, phone, email, address, socialMedia }:
             <ul className="space-y-3">
               {[
                 { label: 'Ana Sayfa', href: '/' },
-                { label: 'Hizmetlerimiz', href: '/kurslar' },
+                { label: 'Sigorta Ürünleri', href: '/sigortalar' },
+                { label: '60sn\'de Teklif Al', href: '/teklif' },
                 { label: 'Hakkımızda', href: '/hakkimizda' },
                 { label: 'Blog', href: '/blog' },
                 { label: 'İletişim', href: '/iletisim' },
@@ -213,28 +214,24 @@ export default function Footer({ siteName, phone, email, address, socialMedia }:
             <p className="text-gray-300 text-sm">
               © {currentYear} {siteName}. Tüm hakları saklıdır.
             </p>
-            <div className="flex gap-6">
-              <Link href="#" className="text-gray-300 hover:text-secondary-gold text-sm transition-colors">
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
+              <Link href="/gizlilik-politikasi" className="text-gray-300 hover:text-secondary-gold text-sm transition-colors">
                 Gizlilik Politikası
               </Link>
-              <Link href="#" className="text-gray-300 hover:text-secondary-gold text-sm transition-colors">
+              <Link href="/kullanim-kosullari" className="text-gray-300 hover:text-secondary-gold text-sm transition-colors">
                 Kullanım Koşulları
+              </Link>
+              <Link href="/kvkk-aydinlatma" className="text-gray-300 hover:text-secondary-gold text-sm transition-colors">
+                KVKK Aydınlatma
+              </Link>
+              <Link href="/kvkk-acik-riza" className="text-gray-300 hover:text-secondary-gold text-sm transition-colors">
+                Açık Rıza Metni
               </Link>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Back to top button - matching navigation style */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-8 right-8 w-12 h-12 bg-gradient-to-r from-primary-red to-secondary-orange text-white rounded-full shadow-glow-red hover:shadow-glow-red-lg hover:scale-110 transition-all duration-300 flex items-center justify-center backdrop-blur-xl border border-white/20"
-        aria-label="Yukarı çık"
-      >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
-      </button>
     </footer>
   );
 }

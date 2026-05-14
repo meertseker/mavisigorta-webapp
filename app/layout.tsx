@@ -73,7 +73,7 @@ export default function RootLayout({
   const structuredData = getLocalBusinessSchema();
 
   return (
-    <html lang="tr" className="dark">
+    <html lang="tr">
       <head>
         <script
           type="application/ld+json"

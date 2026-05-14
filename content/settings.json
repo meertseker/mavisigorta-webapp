@@ -1,12 +1,13 @@
 {
   "siteName": "Mavi Sigorta",
-  "logo": "/images/logo.png",
+  "logo": "/logo.png",
   "contact": {
     "phone": "0532 480 76 17",
+    "whatsapp": "905324807617",
     "email": "info@mavisigorta.net",
     "address": "Beylikdüzü, İstanbul",
     "fullAddress": "Adnan Kahveci Mahallesi, Yavuz Sultan Selim Bulvarı No: 116, Perlevista Rezidans A Blok Kat: 6 Daire: 49, Beylikdüzü/İstanbul",
-    "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12045.123!2d28.6403!3d41.0022!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDAwJzA4LjAiTiAyOMKwMzgnMjUuMSJF!5e0!3m2!1str!2str!4v1234567890"
+    "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.6!2d28.6403!3d41.0049!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14b55ee0a1a1a1a1%3A0x0!2sBeylikd%C3%BCz%C3%BC!5e0!3m2!1str!2str!4v1700000000000"
   },
   "socialMedia": {
     "facebook": "https://facebook.com/mavisigorta",
@@ -16,54 +17,66 @@
   "workingHours": {
     "weekdays": "09:00 - 19:00",
     "saturday": "09:00 - 17:00",
-    "sunday": "10:00 - 16:00"
+    "sunday": "Kapalı"
   },
   "seo": {
-    "title": "Mavi Sigorta - İstanbul Beylikdüzü Sigorta Aracılık Hizmetleri",
-    "description": "İstanbul Beylikdüzü'nde güvenilir sigorta aracılık hizmetleri. Sağlık sigortası, kasko, trafik, konut ve işyeri sigortaları. 25 yıllık deneyim ve profesyonel hizmet.",
+    "title": "Mavi Sigorta - Beylikdüzü Sigorta Acentesi | 60sn'de Teklif",
+    "description": "İstanbul Beylikdüzü Mavi Sigorta: tamamlayıcı sağlık, kasko, trafik, konut, işyeri ve DASK sigortaları. 8 anlaşmalı şirketten 60 saniyede teklif. 25 yıllık deneyim.",
     "keywords": [
       "Beylikdüzü sigorta",
-      "İstanbul sigorta aracılık",
-      "Mavi Sigorta",
-      "sağlık sigortası",
-      "tamamlayıcı sağlık sigortası",
-      "modüler sağlık sigortası",
-      "kasko sigortası",
-      "konut sigortası",
-      "Allianz sigorta"
+      "Beylikdüzü sigorta acentesi",
+      "tamamlayıcı sağlık sigortası Beylikdüzü",
+      "kasko teklif Beylikdüzü",
+      "trafik sigortası Beylikdüzü",
+      "konut sigortası İstanbul",
+      "İşyeri sigortası Beylikdüzü",
+      "DASK Beylikdüzü",
+      "Allianz tamamlayıcı sağlık",
+      "Mavi Sigorta Soner Şeker"
     ]
   },
   "features": [
     {
-      "name": "25 Yıllık Deneyim",
-      "description": "Sigorta sektöründe çeyrek asırlık tecrübe ile güvenilir hizmet",
+      "name": "25 Yıllık Tecrübe",
+      "description": "Çeyrek asırlık sigorta uzmanlığı ile size en uygun ürünü buluyoruz",
       "icon": "award"
     },
     {
-      "name": "Profesyonel Danışmanlık",
-      "description": "Size en uygun sigorta ürününü bulmak için uzman destek",
-      "icon": "users"
+      "name": "8 Anlaşmalı Şirket",
+      "description": "Allianz, HDI, Anadolu, Mapfre ve daha fazlasından karşılaştırmalı teklif",
+      "icon": "shield"
     },
     {
-      "name": "Hızlı Poliçe İşlemleri",
-      "description": "Anında teklif ve hızlı poliçe düzenleme hizmetleri",
+      "name": "60 Saniyede Teklif",
+      "description": "Online formu doldurun, 30 dakika içinde Soner Bey sizi arasın",
       "icon": "zap"
     },
     {
-      "name": "Geniş Ürün Yelpazesi",
-      "description": "Her ihtiyaca yönelik kapsamlı sigorta çözümleri",
-      "icon": "shield"
+      "name": "KVKK & Veri Güvenliği",
+      "description": "Telefonunuzu 3. taraflarla paylaşmıyor, sadece teklif için kullanıyoruz",
+      "icon": "lock"
     }
   ],
   "stats": {
     "yearsOfExperience": 25,
     "successRate": 98,
-    "totalStudents": 10000,
-    "instructors": 5
+    "customersServed": 10000,
+    "agentYearsActive": 25,
+    "partnerCompanies": 8
   },
+  "partners": [
+    { "name": "Allianz", "logo": "/images/partners/allianz.svg" },
+    { "name": "HDI", "logo": "/images/partners/hdi.png" },
+    { "name": "Anadolu", "logo": "/images/partners/anadolu.svg" },
+    { "name": "Mapfre", "logo": "/images/partners/mapfre.svg" },
+    { "name": "Ankara", "logo": "/images/partners/ankara.png" },
+    { "name": "Sompo", "logo": "/images/partners/sompo.svg" },
+    { "name": "Türkiye Sigorta", "logo": "/images/partners/turkiye-sigorta.svg" },
+    { "name": "Quick Sigorta", "logo": "/images/partners/quick.svg" }
+  ],
   "companyInfo": {
     "owner": "Soner Şeker",
-    "fullName": "Mavi Sigorta Aracılık Hizmetleri",
+    "fullName": "Mavi Sigorta Allianz Aracılık Hizmetleri",
     "description": "Sağlığınızı Allianz Tamamlayıcı Sağlık Sigortası ile SSK anlaşmalı hastanelerde fark ödemeden güvence altına alın. Modüler sağlık sigortası ile SGK'dan bağımsız olarak Türkiye'deki tüm özel hastanelerde kullanım imkanı."
   }
 }

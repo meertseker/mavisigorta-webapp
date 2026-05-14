@@ -1,8 +1,9 @@
 // Simple Service Worker for PWA
-const CACHE_NAME = 'efe-surucu-kursu-v1';
+const CACHE_NAME = 'mavi-sigorta-v2';
 const urlsToCache = [
   '/',
-  '/kurslar',
+  '/sigortalar',
+  '/teklif',
   '/hakkimizda',
   '/blog',
   '/iletisim',

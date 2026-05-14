@@ -44,17 +44,16 @@ export default async function BlogPostPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800">
       <Navigation siteName={settings.siteName} />
-      
+
       <div className="h-20"></div>
-      
+
       <article className="container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto">
-          {/* Back Button */}
           <Link
             href="/blog"
-            className="inline-flex items-center text-secondary-orange hover:text-secondary-amber mb-8 transition-colors"
+            className="inline-flex items-center text-primary-red hover:underline mb-8 transition-colors"
           >
             <svg
               className="w-5 h-5 mr-2"
@@ -75,24 +74,24 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* Header */}
           <header className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <span className="bg-primary-red/20 text-secondary-orange border border-primary-red/30 text-sm font-medium px-3 py-1 rounded">
+              <span className="bg-primary-red/15 text-primary-red border border-primary-red/30 text-sm font-medium px-3 py-1 rounded">
                 {post.category}
               </span>
-              <span className="text-gray-400">{formatDate(post.date)}</span>
+              <span className="text-gray-500 dark:text-gray-400">{formatDate(post.date)}</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 drop-shadow">
               {post.title}
             </h1>
-            <p className="text-xl text-gray-300">{post.excerpt}</p>
+            <p className="text-xl text-gray-600 dark:text-gray-300">{post.excerpt}</p>
             <div className="flex items-center gap-2 mt-4">
-              <span className="text-sm text-gray-400">Yazar:</span>
-              <span className="text-sm font-medium text-white">{post.author}</span>
+              <span className="text-sm text-gray-500 dark:text-gray-400">Yazar:</span>
+              <span className="text-sm font-medium text-gray-900 dark:text-white">{post.author}</span>
             </div>
             <div className="flex flex-wrap gap-2 mt-4">
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-sm text-gray-300 bg-white/5 border border-white/10 px-3 py-1 rounded-full"
+                  className="text-sm text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 px-3 py-1 rounded-full"
                 >
                   #{tag}
                 </span>
@@ -100,43 +99,40 @@ export default async function BlogPostPage({ params }: PageProps) {
             </div>
           </header>
 
-          {/* Featured Image */}
-          <div className="h-96 relative rounded-lg overflow-hidden mb-8 shadow-glow">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={post.image || `https://source.unsplash.com/1600x900/?driving,car,${post.category}`}
-              alt={post.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-          </div>
+          {post.image && (
+            <div className="h-96 relative rounded-2xl overflow-hidden mb-8 shadow-lg">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+            </div>
+          )}
 
-          {/* Content */}
-          <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-lg shadow-glass-xl p-8 md:p-12">
-            <div className="prose prose-lg max-w-none">
-              {/* Simple content renderer - will be enhanced with MDX later */}
-              <div className="whitespace-pre-wrap text-gray-300 leading-relaxed">
+          <div className="bg-white dark:bg-gray-900 border border-gray-100 dark:border-white/10 rounded-2xl shadow-lg p-8 md:p-12">
+            <div className="prose dark:prose-invert prose-lg max-w-none">
+              <div className="whitespace-pre-wrap text-gray-700 dark:text-gray-200 leading-relaxed">
                 {post.content}
               </div>
             </div>
           </div>
 
-          {/* CTA */}
-          <div className="mt-12 bg-gradient-to-br from-primary-red via-secondary-orange to-accent-rose text-white rounded-lg p-8 text-center shadow-glow-lg relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-radial from-secondary-gold/20 via-transparent to-transparent animate-pulse-slow"></div>
+          <div className="mt-12 bg-gradient-to-br from-primary-red via-secondary-orange to-accent-rose text-white rounded-2xl p-8 text-center shadow-xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-radial from-secondary-gold/20 via-transparent to-transparent" />
             <div className="relative z-10">
-              <h2 className="text-2xl font-bold mb-4 drop-shadow-lg">
-                Geleceğinizi Güvence Altına Almak İçin Hazır mısınız?
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 drop-shadow">
+                60 saniyede sigorta teklifi alın
               </h2>
-              <p className="mb-6 text-white/90">
-                25 yıllık deneyimimiz ve profesyonel danışmanlarımızla size en uygun
-                sigorta çözümlerini sunuyoruz.
+              <p className="mb-6 text-white/95">
+                Soner Bey 30 dakika içinde sizi arar, 8 anlaşmalı şirketten en uygun teklifi sunar.
               </p>
               <Link
-                href="/iletisim"
-                className="inline-block backdrop-blur-xl bg-white/95 text-primary-red px-8 py-3 rounded-lg font-semibold shadow-[0_10px_40px_rgba(255,255,255,0.3)] hover:shadow-[0_15px_50px_rgba(255,255,255,0.4)] transition-all hover:scale-105 border border-white/50"
+                href="/teklif"
+                className="inline-block bg-white text-primary-red px-8 py-3 rounded-xl font-semibold shadow-lg transition-all hover:scale-105"
               >
-                Ücretsiz Teklif Al
+                60sn'de Teklif Al
               </Link>
             </div>
           </div>

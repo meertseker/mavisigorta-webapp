@@ -27,7 +27,7 @@ export default function Navigation({ siteName, logo }: NavigationProps) {
 
   const menuItems = [
     { label: 'Ana Sayfa', href: '/' },
-    { label: 'Hizmetlerimiz', href: '/kurslar' },
+    { label: 'Sigorta Ürünleri', href: '/sigortalar' },
     { label: 'Hakkımızda', href: '/hakkimizda' },
     { label: 'Blog', href: '/blog' },
     { label: 'İletişim', href: '/iletisim' },
@@ -80,7 +80,7 @@ export default function Navigation({ siteName, logo }: NavigationProps) {
                   Mavi Sigorta
                 </span>
                 <span className="text-xs text-gray-400 font-medium tracking-wider mt-0.5">
-                  Aracılık Hizmetleri
+                  Allianz Aracılık Hizmetleri
                 </span>
               </div>
             </motion.div>
@@ -121,7 +121,7 @@ export default function Navigation({ siteName, logo }: NavigationProps) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.5, ...springs.bouncy }}
           >
-            <Link href="/iletisim">
+            <Link href="/teklif">
               <motion.div
                 className="relative px-6 py-3 bg-gradient-to-r from-primary-red to-secondary-orange text-white rounded-2xl font-semibold shadow-glow-red overflow-hidden"
                 whileHover={{ 
@@ -131,23 +131,13 @@ export default function Navigation({ siteName, logo }: NavigationProps) {
                 whileTap={{ scale: 0.95 }}
                 transition={springs.smooth}
               >
-                {/* Glass overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent" />
-                
-                {/* Shimmer effect */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                  animate={{
-                    x: ['-200%', '200%'],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
+                  animate={{ x: ['-200%', '200%'] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
                 />
-                
-                <span className="relative z-10">Teklif Al</span>
+                <span className="relative z-10">60sn'de Teklif Al</span>
               </motion.div>
             </Link>
           </motion.div>
@@ -229,11 +219,11 @@ export default function Navigation({ siteName, logo }: NavigationProps) {
                 transition={{ delay: menuItems.length * 0.05, ...springs.smooth }}
               >
                 <Link
-                  href="/iletisim"
+                  href="/teklif"
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-3 bg-gradient-to-r from-primary-red to-secondary-orange text-white rounded-xl font-semibold text-center shadow-glow-red"
                 >
-                  Teklif Al
+                  60sn'de Teklif Al
                 </Link>
               </motion.div>
             </motion.div>

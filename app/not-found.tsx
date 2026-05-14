@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800 px-4">
       <div className="text-center max-w-2xl">
         <div className="mb-8">
           <h1 className="text-9xl font-bold text-primary-red mb-4 drop-shadow-[0_0_30px_rgba(0,102,204,0.5)]">404</h1>
@@ -29,11 +29,11 @@ export default function NotFound() {
           </div>
         </div>
 
-        <h2 className="text-3xl font-bold text-white mb-4 drop-shadow-lg">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 drop-shadow">
           Sayfa Bulunamadı
         </h2>
         
-        <p className="text-lg text-gray-300 mb-8">
+        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
           Aradığınız sayfa taşınmış, silinmiş veya hiç var olmamış olabilir. 
           Lütfen URL'yi kontrol edin veya ana sayfaya dönün.
         </p>
@@ -60,21 +60,21 @@ export default function NotFound() {
           </Link>
 
           <Link
-            href="/kurslar"
-            className="inline-flex items-center justify-center px-6 py-3 backdrop-blur-xl bg-white/10 border-2 border-white/30 hover:bg-white/20 text-white rounded-lg transition-all duration-300 font-semibold hover:scale-105"
+            href="/sigortalar"
+            className="inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-white/10 border-2 border-gray-200 dark:border-white/30 hover:bg-gray-50 dark:hover:bg-white/20 text-gray-900 dark:text-white rounded-lg transition-all duration-300 font-semibold hover:scale-105"
           >
-            Ürünlerimizi İncele
+            Sigorta Ürünlerini İncele
           </Link>
         </div>
 
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl shadow-glass-xl p-6">
-          <h3 className="font-semibold text-white mb-4">Popüler Sayfalar:</h3>
+        <div className="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl shadow-lg p-6">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-4">Popüler Sayfalar:</h3>
           <div className="grid grid-cols-2 gap-4 text-sm">
             <Link
-              href="/kurslar"
-              className="text-secondary-orange hover:text-secondary-amber hover:underline text-left transition-colors"
+              href="/sigortalar"
+              className="text-primary-red hover:underline text-left transition-colors"
             >
-              → Hizmetlerimiz
+              → Sigorta Ürünleri
             </Link>
             <Link
               href="/hakkimizda"

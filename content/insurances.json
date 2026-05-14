@@ -1,0 +1,163 @@
+[
+  {
+    "id": "tamamlayici-saglik",
+    "title": "Tamamlayıcı Sağlık Sigortası",
+    "shortTitle": "TSS",
+    "description": "Allianz Tamamlayıcı Sağlık Sigortası ile SSK anlaşmalı özel hastanelerde fark ödemeden tedavi olun. SGK'nın karşılamadığı muayene, tetkik, ameliyat ve yatış farklarını biz karşılarız.",
+    "category": "saglik",
+    "duration": "Yıllık",
+    "features": [
+      "SSK anlaşmalı hastanelerde fark ödemeden tedavi",
+      "Yatarak ve ayakta tedavi kapsamı",
+      "Ameliyat ve doğum masrafları",
+      "Reçeteli ilaç giderleri",
+      "Sağlık raporu ve tetkikler"
+    ],
+    "image": "/images/courses/tamamlayici-saglik.jpg",
+    "popular": true,
+    "priceRange": { "min": 7000, "max": 18000, "unit": "yillik" },
+    "faqs": [
+      {
+        "question": "Tamamlayıcı sağlık sigortası ne işe yarar?",
+        "answer": "SGK'lı (SSK) olduğunuz halde özel hastanede tedavi olmak istediğinizde aradaki fark ücreti TSS tarafından karşılanır; çoğu hastanede tek kuruş ödemezsiniz."
+      },
+      {
+        "question": "Hangi hastanelerde geçerlidir?",
+        "answer": "Allianz TSS anlaşmalı özel hastane ağında (700+ hastane) geçerlidir. Beylikdüzü, Esenyurt ve çevre ilçelerdeki büyük zincirler dahildir; tam liste için bizimle iletişime geçin."
+      },
+      {
+        "question": "Yaş sınırı var mı?",
+        "answer": "Genellikle 0-65 yaş arası kabul edilir; 65 üzeri için ek değerlendirme yapılır. Mevcut hastalıklar için bekleme süresi uygulanabilir."
+      }
+    ]
+  },
+  {
+    "id": "moduler-saglik",
+    "title": "Modüler Sağlık Sigortası",
+    "shortTitle": "Modüler Sağlık",
+    "description": "SGK'dan bağımsız, Türkiye'deki tüm özel hastanelerde geçerli kapsamlı sağlık güvencesi. Anlaşmalı olmayan hastaneleri de seçebilir, geniş tedavi kapsamı ile özgürce sağlık hizmeti alırsınız.",
+    "category": "saglik",
+    "duration": "Yıllık",
+    "features": [
+      "Tüm özel hastanelerde geçerli",
+      "SGK'dan bağımsız kullanım",
+      "Geniş tedavi kapsamı",
+      "Check-up ve ileri tetkikler",
+      "Özel oda ve refakatçi imkanı",
+      "Yurt dışı tedavi desteği"
+    ],
+    "image": "/images/courses/moduler-saglik.jpg",
+    "popular": true,
+    "priceRange": { "min": 12000, "max": 28000, "unit": "yillik" }
+  },
+  {
+    "id": "kasko",
+    "title": "Kasko Sigortası",
+    "shortTitle": "Kasko",
+    "description": "Aracınızı çarpışma, çalınma, yangın ve doğal afetlere karşı kapsamlı koruyun. 8 anlaşmalı şirketten en uygun teklifi 24 saat içinde sunalım.",
+    "category": "arac",
+    "duration": "Yıllık",
+    "features": [
+      "Çarpma ve çarpılma teminatı",
+      "Çalınma güvencesi",
+      "Yangın ve doğal afet koruması",
+      "Cam kırılması teminatı",
+      "Deprem ve sel teminatı",
+      "İkame araç hizmeti"
+    ],
+    "image": "/images/courses/kasko.jpg",
+    "popular": true,
+    "priceRange": { "min": 6500, "max": 25000, "unit": "yillik" }
+  },
+  {
+    "id": "trafik",
+    "title": "Trafik Sigortası",
+    "shortTitle": "Trafik",
+    "description": "Yasal zorunlu trafik sigortası ile üçüncü şahıs zararlarını güvence altına alın. 5 dakika içinde online poliçe.",
+    "category": "arac",
+    "duration": "Yıllık",
+    "features": [
+      "Yasal zorunlu teminatlar",
+      "Üçüncü şahıs maddi ve bedeni zararları",
+      "Hızlı poliçe düzenleme",
+      "Online işlem ve teslim",
+      "Hasarsızlık indirim takibi"
+    ],
+    "image": "/images/courses/trafik.jpg",
+    "popular": false,
+    "priceRange": { "min": 1800, "max": 6500, "unit": "yillik" }
+  },
+  {
+    "id": "konut",
+    "title": "Konut Sigortası",
+    "shortTitle": "Konut",
+    "description": "Evinizi yangın, su baskını, hırsızlık ve doğal afetlere karşı güvence altına alın. Eşyalarınız ve cam kırılması teminat altında.",
+    "category": "mulkiyet",
+    "duration": "Yıllık",
+    "features": [
+      "Yangın ve su baskını teminatı",
+      "Hırsızlık güvencesi",
+      "Doğal afet koruması (sel, fırtına)",
+      "Ev eşyası sigortası",
+      "Cam kırılması teminatı",
+      "Hukuki koruma"
+    ],
+    "image": "/images/courses/konut.jpg",
+    "popular": false,
+    "priceRange": { "min": 800, "max": 2500, "unit": "yillik" }
+  },
+  {
+    "id": "isyeri",
+    "title": "İşyeri Sigortası",
+    "shortTitle": "İşyeri",
+    "description": "İşyerinizi, demirbaşlarınızı ve stoklarınızı kapsamlı şekilde güvence altına alın. İşveren mali sorumluluk dahil.",
+    "category": "mulkiyet",
+    "duration": "Yıllık",
+    "features": [
+      "İşyeri binası teminatı",
+      "Demirbaş ve ekipman güvencesi",
+      "Stok güvencesi",
+      "İşveren mali sorumluluk",
+      "Cam kırılması teminatı",
+      "İş durması teminatı"
+    ],
+    "image": "/images/courses/isyeri.jpg",
+    "popular": false,
+    "priceRange": { "min": 2500, "max": 9000, "unit": "yillik" }
+  },
+  {
+    "id": "dask",
+    "title": "DASK Deprem Sigortası",
+    "shortTitle": "DASK",
+    "description": "Yasal zorunlu deprem sigortası ile konutunuzu deprem ve depremin sebep olduğu hasarlara karşı güvence altına alın.",
+    "category": "mulkiyet",
+    "duration": "Yıllık",
+    "features": [
+      "Yasal zorunlu deprem teminatı",
+      "Konut binası güvencesi",
+      "Deprem ve depremden kaynaklı hasarlar",
+      "Hızlı hasar ödemesi"
+    ],
+    "image": "/images/courses/dask.jpg",
+    "popular": false,
+    "priceRange": { "min": 250, "max": 1200, "unit": "yillik" }
+  },
+  {
+    "id": "seyahat-saglik",
+    "title": "Seyahat Sağlık Sigortası",
+    "shortTitle": "Seyahat",
+    "description": "Yurt dışı seyahatlerinizde sağlık ve acil durum giderlerini güvence altına alın. Schengen ve vize başvuruları için geçerli.",
+    "category": "seyahat",
+    "duration": "Seyahat süresi",
+    "features": [
+      "Yurt dışı sağlık giderleri",
+      "Acil tıbbi tedavi masrafları",
+      "Hastane yatış teminatı",
+      "Ambulans ve nakil hizmeti",
+      "Schengen vizesi için geçerli belge"
+    ],
+    "image": "/images/courses/seyahat.jpg",
+    "popular": false,
+    "priceRange": { "min": 200, "max": 1800, "unit": "yillik" }
+  }
+]

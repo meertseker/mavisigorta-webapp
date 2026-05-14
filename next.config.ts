@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const ContentSecurityPolicy = `
   default-src 'self';
@@ -18,6 +19,20 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   compress: true,
   poweredByHeader: false,
+
+  // C:\Users\meert\package.json (7 ay önce yanlışlıkla `react-icons` ile oluşmuş)
+  // Turbopack'in workspace root tespitini bozuyor ve tailwindcss'i yanlış
+  // dizinden çözmeye çalışıyor.
+  //
+  // turbopack.root'u proje dizinine eşitlemek başka bir Next.js bug'ını tetikliyor
+  // (https://github.com/vercel/next.js/issues/90307 — projectPath="." fallback'i
+  // CSS @import resolution'ı kırıyor). O yüzden bir üst dizin olan Desktop'a
+  // sabitliyoruz; Turbopack üst kullanıcı dizinine çıkmaz, projectPath="mavisigorta"
+  // olur, CSS import'ları doğru çalışır.
+  turbopack: {
+    root: path.resolve(__dirname, ".."),
+  },
+  outputFileTracingRoot: path.resolve(__dirname, ".."),
   
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production' ? {
@@ -50,6 +65,14 @@ const nextConfig: NextConfig = {
     ],
   },
   
+  async redirects() {
+    return [
+      // Legacy course-related URLs from the driving-school template → insurance taxonomy.
+      { source: '/kurslar', destination: '/sigortalar', permanent: true },
+      { source: '/kurslar/:slug', destination: '/sigortalar/:slug', permanent: true },
+    ];
+  },
+
   async headers() {
     return [
       {

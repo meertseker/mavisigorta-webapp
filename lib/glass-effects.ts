@@ -13,8 +13,10 @@ export const glassEffects = {
   
   // Navigation variants
   navbar: {
-    default: 'backdrop-blur-sm bg-transparent border-b border-transparent',
-    scrolled: 'backdrop-blur-xl bg-primary-red/80 border-b border-primary-red/30 shadow-glow-red',
+    default:
+      'backdrop-blur-xl bg-primary-red border-b border-white/10 shadow-md',
+    scrolled:
+      'backdrop-blur-xl bg-primary-red-dark border-b border-white/15 shadow-glow-red',
   },
   
   // Button variants  

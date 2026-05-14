@@ -1,0 +1,18 @@
+{
+  "id": "soner-seker",
+  "name": "Soner Şeker",
+  "title": "Kurucu & Sigorta Acentesi",
+  "yearsActive": 25,
+  "photo": "/images/instructors/soner-seker.jpg",
+  "bio": "25 yıllık sigorta sektörü deneyimi ile İstanbul Beylikdüzü'nde müşterilerime en uygun sigorta çözümlerini sunuyorum. Tamamlayıcı sağlık sigortası, kasko, konut ve işyeri sigortaları başta olmak üzere her ihtiyaca özel danışmanlık veriyorum.",
+  "specialties": [
+    "Tamamlayıcı Sağlık Sigortası",
+    "Modüler Sağlık Sigortası",
+    "Kasko & Trafik",
+    "Konut & DASK",
+    "İşyeri Sigortası"
+  ],
+  "phone": "0532 480 76 17",
+  "whatsapp": "905324807617",
+  "email": "info@mavisigorta.net"
+}

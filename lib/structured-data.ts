@@ -1,18 +1,20 @@
 import { getSiteSettings } from './content';
 import type { WithContext, LocalBusiness, BreadcrumbList, FAQPage, Service, Review, Article } from 'schema-dts';
-import type { Course, BlogPost } from './types';
+import type { Insurance, BlogPost } from './types';
+
+const SITE = 'https://tamamlayicisaglikbeylikduzu.com';
 
 export function getLocalBusinessSchema(): WithContext<LocalBusiness> {
   const settings = getSiteSettings();
-  
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    '@id': 'https://tamamlayicisaglikbeylikduzu.com',
+    '@type': 'InsuranceAgency',
+    '@id': SITE,
     name: settings.siteName,
-    image: 'https://tamamlayicisaglikbeylikduzu.com/images/logo.png',
+    image: `${SITE}/logo.png`,
     description: settings.seo.description,
-    url: 'https://tamamlayicisaglikbeylikduzu.com',
+    url: SITE,
     telephone: settings.contact.phone,
     email: settings.contact.email,
     address: {
@@ -24,7 +26,7 @@ export function getLocalBusinessSchema(): WithContext<LocalBusiness> {
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: 41.0022,
+      latitude: 41.0049,
       longitude: 28.6403,
     },
     priceRange: '₺₺',
@@ -47,6 +49,7 @@ export function getLocalBusinessSchema(): WithContext<LocalBusiness> {
       settings.socialMedia.instagram,
       settings.socialMedia.twitter,
       settings.socialMedia.youtube,
+      settings.socialMedia.linkedin,
     ].filter((url): url is string => typeof url === 'string'),
   };
 }
@@ -84,30 +87,41 @@ export function getFAQPageSchema(faqs: FAQ[]): WithContext<FAQPage> {
   };
 }
 
-export function getServiceSchema(course: Course): WithContext<Service> {
+export function getInsuranceServiceSchema(ins: Insurance): WithContext<Service> {
   const settings = getSiteSettings();
-  
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Service',
-    serviceType: course.title,
-    description: course.description,
+    serviceType: ins.title,
+    description: ins.description,
     provider: {
-      '@type': 'Organization',
+      '@type': 'InsuranceAgency',
       name: settings.siteName,
       telephone: settings.contact.phone,
       email: settings.contact.email,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Beylikdüzü',
+        addressRegion: 'İstanbul',
+        addressCountry: 'TR',
+      },
     },
     areaServed: {
       '@type': 'Place',
       name: 'Beylikdüzü, İstanbul',
     },
-    offers: {
-      '@type': 'Offer',
-      price: course.price,
-      priceCurrency: 'TRY',
-      availability: 'https://schema.org/InStock',
-    },
+    ...(ins.priceRange
+      ? {
+          offers: {
+            '@type': 'AggregateOffer',
+            priceCurrency: 'TRY',
+            lowPrice: ins.priceRange.min,
+            highPrice: ins.priceRange.max,
+            availability: 'https://schema.org/InStock',
+          },
+        }
+      : {}),
   };
 }
 
@@ -140,15 +154,15 @@ export function getReviewSchema(review: ReviewData): WithContext<Review> {
 
 export function getAggregateRatingSchema(averageRating: number, reviewCount: number) {
   const settings = getSiteSettings();
-  
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': 'InsuranceAgency',
     name: settings.siteName,
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: averageRating,
-      reviewCount: reviewCount,
+      reviewCount,
       bestRating: 5,
       worstRating: 1,
     },
@@ -157,13 +171,13 @@ export function getAggregateRatingSchema(averageRating: number, reviewCount: num
 
 export function getArticleSchema(post: BlogPost): WithContext<Article> {
   const settings = getSiteSettings();
-  
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title,
     description: post.excerpt,
-    image: post.image ? `https://tamamlayicisaglikbeylikduzu.com${post.image}` : undefined,
+    image: post.image ? `${SITE}${post.image}` : undefined,
     datePublished: post.date,
     dateModified: post.date,
     author: {
@@ -175,12 +189,12 @@ export function getArticleSchema(post: BlogPost): WithContext<Article> {
       name: settings.siteName,
       logo: {
         '@type': 'ImageObject',
-        url: 'https://tamamlayicisaglikbeylikduzu.com/images/logo.png',
+        url: `${SITE}/logo.png`,
       },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://tamamlayicisaglikbeylikduzu.com/blog/${post.slug}`,
+      '@id': `${SITE}/blog/${post.slug}`,
     },
   };
 }
