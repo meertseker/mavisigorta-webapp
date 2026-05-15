@@ -6,6 +6,16 @@ frontend:
         - npm ci
     build:
       commands:
+        # ────────────────────────────────────────────────────────────────
+        # AWS Amplify SSR env-var injection.
+        # Amplify console'da tanımlı env değişkenleri Next.js Lambda
+        # runtime'ına otomatik geçmez. Build sırasında .env.production
+        # dosyasına yazıyoruz; Next.js bundle'a dahil ediyor.
+        # https://docs.aws.amazon.com/amplify/latest/userguide/ssr-environment-variables.html
+        # ────────────────────────────────────────────────────────────────
+        - env | grep -E '^(ADMIN_|RESEND_|CONTACT_|GOOGLE_ADS_|SENTRY_AUTH_|NEXT_PUBLIC_)' >> .env.production || true
+        - echo "Injected env vars into .env.production:"
+        - cut -d= -f1 .env.production || true
         - npm run build
   artifacts:
     baseDirectory: .next
