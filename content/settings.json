@@ -21,7 +21,7 @@
   },
   "seo": {
     "title": "Mavi Sigorta - Beylikdüzü Sigorta Acentesi | 60sn'de Teklif",
-    "description": "İstanbul Beylikdüzü Mavi Sigorta: tamamlayıcı sağlık, kasko, trafik, konut, işyeri ve DASK sigortaları. 8 anlaşmalı şirketten 60 saniyede teklif. 25 yıllık deneyim.",
+    "description": "İstanbul Beylikdüzü Mavi Sigorta: tamamlayıcı sağlık, kasko, trafik, konut, işyeri ve DASK sigortaları. Allianz ürünleri için 60 saniyede teklif. 25 yıllık deneyim.",
     "keywords": [
       "Beylikdüzü sigorta",
       "Beylikdüzü sigorta acentesi",
@@ -42,8 +42,8 @@
       "icon": "award"
     },
     {
-      "name": "8 Anlaşmalı Şirket",
-      "description": "Allianz, HDI, Anadolu, Mapfre ve daha fazlasından karşılaştırmalı teklif",
+      "name": "Allianz ile Çalışma",
+      "description": "Allianz sigorta ürünlerinde teklif, poliçe ve hasar süreci desteği",
       "icon": "shield"
     },
     {
@@ -62,17 +62,10 @@
     "successRate": 98,
     "customersServed": 10000,
     "agentYearsActive": 25,
-    "partnerCompanies": 8
+    "partnerCompanies": 1
   },
   "partners": [
-    { "name": "Allianz", "logo": "/images/partners/allianz.svg" },
-    { "name": "HDI", "logo": "/images/partners/hdi.png" },
-    { "name": "Anadolu", "logo": "/images/partners/anadolu.svg" },
-    { "name": "Mapfre", "logo": "/images/partners/mapfre.svg" },
-    { "name": "Ankara", "logo": "/images/partners/ankara.png" },
-    { "name": "Sompo", "logo": "/images/partners/sompo.svg" },
-    { "name": "Türkiye Sigorta", "logo": "/images/partners/turkiye-sigorta.svg" },
-    { "name": "Quick Sigorta", "logo": "/images/partners/quick.svg" }
+    { "name": "Allianz", "logo": "/images/partners/allianz.svg" }
   ],
   "companyInfo": {
     "owner": "Soner Şeker",

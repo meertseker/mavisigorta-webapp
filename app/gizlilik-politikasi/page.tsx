@@ -46,9 +46,8 @@ export default function PrivacyPolicyPage() {
 
           <h2>3. Veri Paylaşımı</h2>
           <p>
-            Verilerinizi yalnızca size teklif hazırlamak amacıyla anlaşmalı olduğumuz sigorta
-            şirketleriyle (Allianz, HDI, Anadolu, Mapfre, Ankara, Sompo, Türkiye Sigorta, Quick
-            Sigorta vb.) paylaşırız. Verileriniz hiçbir koşulda 3. taraf reklam ağlarına satılmaz.
+            Verilerinizi yalnızca size teklif ve poliçe hazırlamak amacıyla Allianz ile paylaşırız.
+            Verileriniz hiçbir koşulda 3. taraf reklam ağlarına satılmaz.
           </p>
 
           <h2>4. Çerezler</h2>

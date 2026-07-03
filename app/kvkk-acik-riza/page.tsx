@@ -30,7 +30,7 @@ export default function ExplicitConsentPage() {
           <h2>1. Onay Verirseniz Ne Yapılır?</h2>
           <ul>
             <li>Poliçe yenileme döneminde hatırlatma bildirimi</li>
-            <li>Anlaşmalı şirket kampanyaları (avantajlı fiyat, ek teminat)</li>
+            <li>Allianz ürün kampanyaları (avantajlı fiyat, ek teminat)</li>
             <li>Sigorta sektöründeki yasal değişikliklerle ilgili bilgilendirme</li>
             <li>Mavi Sigorta'nın yeni ürün ve hizmetleri</li>
           </ul>

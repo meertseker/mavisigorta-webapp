@@ -704,7 +704,7 @@ function RSAEditor({
         maxLength={90}
         values={ad.descriptions}
         onChange={(descriptions) => onChange({ descriptions })}
-        placeholder="Örn: 60 saniyede online formu doldurun, 8 sigorta şirketinden karşılaştırmalı teklif alın."
+        placeholder="Örn: 60 saniyede online formu doldurun, Allianz ürünleri için teklif sürecini başlatın."
       />
     </div>
   );

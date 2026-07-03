@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!ins) return { title: 'Sigorta Bulunamadı' };
   return {
     title: `${ins.title} - Beylikdüzü'nün En Hızlı Teklif Servisi`,
-    description: `${ins.title} hakkında her şey: kapsam, fiyat aralığı, anlaşmalı şirketler ve 60 saniyede teklif. ${ins.description.split('.')[0]}.`,
+    description: `${ins.title} hakkında her şey: kapsam, fiyat aralığı, Allianz ürünleri ve 60 saniyede teklif. ${ins.description.split('.')[0]}.`,
     alternates: { canonical: `/sigortalar/${ins.id}` },
     openGraph: {
       title: `${ins.title} | Mavi Sigorta`,
@@ -185,7 +185,7 @@ export default async function InsuranceDetailPage({ params }: PageProps) {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { n: '1', t: 'Formu doldurun', d: '60 saniyede 2 adımda bilgilerinizi alalım.' },
-              { n: '2', t: 'Karşılaştırma', d: '8 anlaşmalı şirketten en uygun teklifi çıkaralım.' },
+              { n: '2', t: 'Teklif süreci', d: 'Allianz ürünleri için uygun teklif seçeneklerini değerlendirelim.' },
               { n: '3', t: 'Soner Bey arasın', d: '30 dakika içinde poliçeniz hazır.' },
             ].map((s) => (
               <div
@@ -239,7 +239,7 @@ export default async function InsuranceDetailPage({ params }: PageProps) {
       <section className="py-12 md:py-16 bg-gray-50/60 dark:bg-black/30">
         <div className="container mx-auto px-4 max-w-5xl">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">
-            Anlaşmalı sigorta şirketlerimiz
+            Çalıştığımız sigorta şirketi
           </h2>
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-gray-700 dark:text-gray-300 font-semibold">
             {settings.partners.map((p) => (
@@ -249,8 +249,8 @@ export default async function InsuranceDetailPage({ params }: PageProps) {
             ))}
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-6 text-center max-w-2xl mx-auto">
-            8 farklı sigorta şirketinin tarifesini sizin için karşılaştırıyoruz. Tek başınıza her şirketi
-            tek tek aramak yerine, ücretsiz olarak bizden bekleyin.
+            Soner Şeker ve Mavi Sigorta yalnızca Allianz ürünleri için teklif, poliçe ve hasar süreci desteği sunar.
+            Başvurunuzu bırakın, süreci sizin için takip edelim.
           </p>
         </div>
       </section>

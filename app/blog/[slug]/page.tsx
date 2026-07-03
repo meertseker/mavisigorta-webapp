@@ -126,7 +126,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 60 saniyede sigorta teklifi alın
               </h2>
               <p className="mb-6 text-white/95">
-                Soner Bey 30 dakika içinde sizi arar, 8 anlaşmalı şirketten en uygun teklifi sunar.
+                Soner Bey 30 dakika içinde sizi arar, Allianz ürünleri için teklif sürecinizi başlatır.
               </p>
               <Link
                 href="/teklif"

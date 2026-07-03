@@ -61,7 +61,7 @@ export default async function ThanksPage({ params }: PageProps) {
               {[
                 { t: '10 dakika', d: 'WhatsApp\'tan onay mesajı geliyor.' },
                 { t: '30 dakika', d: `${agent.name} sizi arayıp ihtiyacınızı dinleyecek.` },
-                { t: '24 saat', d: 'E-posta ile yazılı, karşılaştırmalı teklif paylaşılacak.' },
+                { t: '24 saat', d: 'E-posta ile yazılı Allianz teklif bilgisi paylaşılacak.' },
               ].map((step, i) => (
                 <li key={i} className="flex items-start gap-4">
                   <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary-red to-secondary-orange text-white flex items-center justify-center font-bold text-sm shrink-0">

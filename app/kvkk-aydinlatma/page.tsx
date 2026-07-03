@@ -63,7 +63,7 @@ export default function KvkkPage() {
 
           <h2>5. Aktarım</h2>
           <p>
-            Verileriniz, teklif hazırlanması amacıyla anlaşmalı sigorta şirketlerine, yasal
+            Verileriniz, teklif hazırlanması amacıyla Allianz ile, yasal
             yükümlülükler nedeniyle yetkili kamu kurum ve kuruluşlarına ve hizmet aldığımız teknoloji
             sağlayıcılarına (e-posta, CRM, analitik) güvenli biçimde aktarılabilir. Yurtdışına
             aktarım yalnızca açık rızanızla veya KVKK m. 9 kapsamındaki istisnalarla yapılır.

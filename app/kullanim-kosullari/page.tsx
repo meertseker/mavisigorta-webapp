@@ -42,7 +42,7 @@ export default function TermsPage() {
 
           <h2>3. Sorumluluk Reddi</h2>
           <p>
-            Mavi Sigorta, fiyat tahminleri, anlaşmalı şirket listeleri ve içeriklerin doğruluğunu
+            Mavi Sigorta, fiyat tahminleri, Allianz ürün bilgileri ve içeriklerin doğruluğunu
             koruma çabasındadır; ancak fiyatlar sigorta şirketlerinin tarifelerine, müşteri
             profillerine ve resmi düzenlemelere göre değişebilir.
           </p>

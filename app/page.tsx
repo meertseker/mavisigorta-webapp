@@ -51,7 +51,7 @@ export default function Home() {
 
       <Hero
         title="60 Saniyede Sigorta Teklifi Al"
-        subtitle={`${stats.yearsOfExperience} yıllık deneyim, ${stats.partnerCompanies} anlaşmalı sigorta şirketi. Tamamlayıcı sağlık, kasko, konut ve daha fazlasında karşılaştırmalı teklif. Soner Bey 30 dakika içinde sizi arasın.`}
+        subtitle={`${stats.yearsOfExperience} yıllık deneyim, Allianz ile çalışan sigorta aracılığı. Tamamlayıcı sağlık, kasko, konut ve daha fazlasında Allianz ürünleri için teklif. Soner Bey 30 dakika içinde sizi arasın.`}
         primaryCta={{ text: '60 Saniyede Teklif Al', href: '/teklif' }}
         secondaryCta={{
           text: 'WhatsApp ile Sor',
@@ -110,7 +110,7 @@ export default function Home() {
             />
             <StatsCard
               value={stats.partnerCompanies}
-              label="Anlaşmalı Sigorta Şirketi"
+              label="Çalışılan Sigorta Şirketi"
               icon={
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -125,12 +125,12 @@ export default function Home() {
       <ImageStorySection
         eyebrow="25 Yıldır Beylikdüzü'nde"
         title="Soner Bey, telefonunuzun öbür ucunda."
-        description="Mavi Sigorta, Beylikdüzü Adnan Kahveci'de fiziksel ofisi olan, SEDDK lisanslı bir sigorta aracılık şirketi. 8 anlaşmalı şirketin tekliflerini biz topluyoruz — siz sadece en uygununu seçiyorsunuz."
+        description="Mavi Sigorta, Beylikdüzü Adnan Kahveci'de fiziksel ofisi olan, SEDDK lisanslı bir sigorta aracılık şirketi. Soner Bey Allianz ürünleri için teklif, poliçe ve hasar süreçlerinizi takip ediyor."
         bullets={[
           'Fiziki ofis: Yavuz Sultan Selim Bulvarı 116, Beylikdüzü',
           'SEDDK lisanslı, KVKK uyumlu aracılık',
           'Hasar anında 7/24 takip — siz aramadan biz dönüyoruz',
-          '8 sigorta şirketi arasından karşılaştırmalı teklif',
+          'Allianz ürünleri için teklif ve poliçe süreci',
         ]}
         image="/sonerbey.webp"
         imageAlt="Soner Şeker — Mavi Sigorta, Beylikdüzü"
@@ -162,7 +162,7 @@ export default function Home() {
               Neden Mavi Sigorta?
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300">
-              25 yıllık deneyim, 8 anlaşmalı şirket, 60 saniyede teklif
+              25 yıllık deneyim, Allianz ile çalışma, 60 saniyede teklif
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -206,7 +206,7 @@ export default function Home() {
               Sigorta Ürünlerimiz
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300">
-              8 ürün, 8 anlaşmalı şirket, tek bir formla karşılaştırma
+              8 ürün kategorisi, Allianz odaklı teklif süreci
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto">
@@ -315,10 +315,10 @@ export default function Home() {
         <div className="absolute inset-0 backdrop-blur-sm bg-black/20" />
         <div className="container mx-auto px-4 text-center relative z-10">
           <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white drop-shadow-lg">
-            Sigortanızı 60 Saniyede Karşılaştırın
+            Sigorta Teklifinizi 60 Saniyede Başlatın
           </h2>
           <p className="text-lg md:text-xl mb-8 text-white/95 max-w-2xl mx-auto drop-shadow-md">
-            Soner Bey ve ekibi 25 yıldır Beylikdüzü'nde — siz aramadan biz 8 sigorta şirketinin teklifini sizin için alıyoruz.
+            Soner Bey ve ekibi 25 yıldır Beylikdüzü'nde — Allianz teklif sürecinizi sizin için takip ediyor.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Link

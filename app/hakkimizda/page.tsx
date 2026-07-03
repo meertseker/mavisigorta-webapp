@@ -39,12 +39,12 @@ export default function AboutPage() {
       <ImageStorySection
         eyebrow="Hikayemiz"
         title="1999'dan beri Beylikdüzü ailesinin sigorta danışmanı."
-        description="Soner Bey, 1999 yılında Beylikdüzü'nde küçük bir ofiste başladı. 25 yıl sonra hâlâ aynı mahallede, aynı titizlikle çalışıyor. 8 anlaşmalı şirketin tekliflerini biz topluyoruz, siz sadece en uygununu seçiyorsunuz."
+        description="Soner Bey, 1999 yılında Beylikdüzü'nde küçük bir ofiste başladı. 25 yıl sonra hâlâ aynı mahallede, aynı titizlikle çalışıyor. Allianz ürünleri için teklif, poliçe ve hasar süreçlerinde müşterilerine destek oluyor."
         bullets={[
           'SEDDK lisanslı sigorta aracılık şirketi',
           'KVKK ve aracılık yönetmeliklerine tam uyum',
           'Hasar anında dosya takibi — biz arar, biz hatırlatırız',
-          '8 sigorta şirketi: Allianz, AXA, Anadolu, HDI ve daha fazlası',
+          'Allianz ürünlerinde teklif, poliçe ve hasar süreci takibi',
         ]}
         image="/sonerbey.webp"
         imageAlt="Soner Şeker — Mavi Sigorta kurucusu, 25 yıldır Beylikdüzü'nde"
@@ -58,13 +58,13 @@ export default function AboutPage() {
         title="Sigortayı karmaşık olmaktan çıkarmak."
         description="Sigorta poliçeleri sayfalarca yazıyla, ince yazıyla, anlaşılması zor terimlerle gelir. Bizim işimiz tam buradan başlar: poliçeyi sade Türkçe ile anlatmak, sizin için en doğru teminatı seçmek ve hasar anında yanınızda olmak."
         bullets={[
-          'Şeffaf fiyat: hangi şirket, hangi prim — biz gösteririz',
+          'Şeffaf fiyat: hangi teminat, hangi prim — biz gösteririz',
           'Sadece komisyon — sizden ek ücret yok',
           'Hasar danışmanlığı: 7/24 telefonla yanınızdayız',
           'Yenileme hatırlatması: 30 gün öncesinde size dönüyoruz',
         ]}
         image="/allianz.webp"
-        imageAlt="Allianz yetkili acente — Mavi Sigorta"
+        imageAlt="Allianz ürünleri — Mavi Sigorta"
         imagePosition="left"
         variant="tinted"
         primaryCta={{ text: '60sn\'de Teklif Al', href: '/teklif' }}
@@ -132,7 +132,7 @@ export default function AboutPage() {
             />
             <StatsCard
               value={stats.partnerCompanies}
-              label="Anlaşmalı Sigorta Şirketi"
+              label="Çalışılan Sigorta Şirketi"
               icon={
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />

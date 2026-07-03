@@ -10,7 +10,7 @@ import MobileStickyBar from '@/components/ui/MobileStickyBar';
 export const metadata: Metadata = {
   title: 'Sigorta Ürünlerimiz - 60sn\'de Teklif',
   description:
-    'Tamamlayıcı sağlık, kasko, trafik, konut, işyeri, DASK, seyahat sigortası ve modüler sağlık. 8 anlaşmalı şirketten karşılaştırmalı teklif.',
+    'Tamamlayıcı sağlık, kasko, trafik, konut, işyeri, DASK, seyahat sigortası ve modüler sağlık. Allianz ürünleri için 60 saniyede teklif.',
   alternates: { canonical: '/sigortalar' },
 };
 
@@ -31,7 +31,7 @@ export default function InsurancesPage() {
             Sigorta Ürünlerimiz
           </h1>
           <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-6 drop-shadow-md">
-            8 anlaşmalı sigorta şirketinden 60 saniyede karşılaştırmalı teklif alın.
+            Allianz ürünleri için 60 saniyede teklif talebi oluşturun.
             25 yıllık deneyimle Soner Bey sizi 30 dakika içinde arar.
           </p>
           <Link
@@ -65,7 +65,7 @@ export default function InsurancesPage() {
               İhtiyacınıza uygun çözümü seçin
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              8 sigorta şirketi, 8 ürün kategorisi. Karşılaştırmalı teklif 60 saniyede.
+              8 ürün kategorisi, Allianz odaklı teklif süreci. Başvurunuzu 60 saniyede tamamlayın.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">

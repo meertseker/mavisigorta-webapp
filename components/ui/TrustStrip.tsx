@@ -28,7 +28,7 @@ export default function TrustStrip({
             </div>
             <div className="min-w-0">
               <div className={`font-bold text-sm md:text-base ${fg}`}>
-                {yearsActive} yıllık deneyim, {partners.length} anlaşmalı şirket
+                {yearsActive} yıllık deneyim, Allianz ile çalışma
               </div>
               {showLicense && (
                 <div className="text-xs text-gray-500 dark:text-gray-400">

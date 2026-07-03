@@ -85,7 +85,7 @@ export function getSiteSettings(): SiteSettings {
         successRate: 98,
         customersServed: 10000,
         agentYearsActive: 25,
-        partnerCompanies: 8,
+        partnerCompanies: 1,
       },
       partners: [],
       companyInfo: {

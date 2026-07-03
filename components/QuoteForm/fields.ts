@@ -126,7 +126,7 @@ export const PRODUCT_FORMS: Record<InsuranceSlug, ProductFormDef> = {
         required: true,
       },
     ],
-    hopeFallback: '8 sigorta şirketinden kasko teklifi hazırlanıyor.',
+    hopeFallback: 'Allianz kasko teklifi hazırlanıyor.',
   },
   trafik: {
     product: 'trafik',
@@ -142,7 +142,7 @@ export const PRODUCT_FORMS: Record<InsuranceSlug, ProductFormDef> = {
         required: true,
       },
     ],
-    hopeFallback: 'Aktif teklif bekliyor: 4 sigorta şirketi.',
+    hopeFallback: 'Allianz trafik sigortası teklifi hazırlanıyor.',
   },
   konut: {
     product: 'konut',

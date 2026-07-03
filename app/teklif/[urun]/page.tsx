@@ -116,7 +116,7 @@ export default async function QuoteProductPage({ params }: PageProps) {
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { n: '1', t: 'Formu doldurun', d: '60 saniyede 2 adımda bilgilerinizi alalım.' },
-              { n: '2', t: 'Karşılaştıralım', d: '8 anlaşmalı şirketten size en uygun teklifi çıkaralım.' },
+              { n: '2', t: 'Teklif hazırlayalım', d: 'Allianz ürünleri için uygun teklif seçeneklerini değerlendirelim.' },
               { n: '3', t: 'Soner Bey arasın', d: '30 dakika içinde ücretsiz danışmanlık ve poliçe.' },
             ].map((s) => (
               <div
